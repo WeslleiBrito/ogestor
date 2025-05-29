@@ -1,76 +1,45 @@
 package com.example.ogestor.componentes.base;
 
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public abstract class BaseJanela {
-    private static final Logger LOGGER = Logger.getLogger(BaseJanela.class.getName());
+public class BaseJanela {
+
     protected Stage stage;
-    protected Scene scene;
-    protected Parent root;
-
-    public BaseJanela(Stage stage, String fxmlPath) {
-        this.stage = stage;
-        URL fxml = getClass().getResource(fxmlPath);
-        Objects.requireNonNull(fxml, "Arquivo fxml não encontrado ou caminho incorreto. " + fxmlPath);
-
+    private static final Logger LOGGER = Logger.getLogger(BaseJanela.class.getName());
+    public BaseJanela(String fxmlPath) {
+        this.stage = new Stage();
         try {
-            FXMLLoader loader = new FXMLLoader(fxml);
-            this.root = loader.load(); // corrigido
-            this.scene = new Scene(this.root, getWidth(), getHeight());
-
-            stage.setScene(scene);
-            stage.setTitle(getTitle());
-            stage.setResizable(isResizable());
-            stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream(getIconPath()))));
-
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(fxmlPath)));
+            stage.setScene(new Scene(root));
+            configurarJanelaBase();
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Falha ao carregar a tela: " + fxmlPath, e);
         }
     }
 
-    public void show() {
+    protected void configurarJanelaBase() {
+        stage.getIcons().add(new javafx.scene.image.Image("/com/example/ogestor/assets/img/icon.png"));
+        // Outras configurações globais
+    }
+
+    public void show () {
         stage.show();
     }
 
-    protected int getWidth() {
-        return 400;
+    public void close () {
+        stage.close();
     }
 
-    protected int getHeight() {
-        return 300;
-    }
-
-    protected boolean isResizable() {
-        return false;
-    }
-
-    protected String getTitle() {
-        return "Janela";
-    }
-
-    protected String getIconPath() {
-        return "/com/example/ogestor/icons/worker.png";
-    }
-
-    public Stage getStage() {
+    protected Stage getStage() {
         return stage;
-    }
-
-    public Scene getScene() {
-        return scene;
-    }
-
-    public Parent getRoot() {
-        return root;
     }
 }

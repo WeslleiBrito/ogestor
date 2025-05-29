@@ -5,7 +5,7 @@ import javafx.stage.Stage;
 
 public class Login extends BaseJanela {
     public Login(Stage stage) {
-        super(stage, "/com/example/ogestor/windows/login/login.fxml");
+        super("/com/example/ogestor/windows/login/login.fxml");
     }
 
     @Override
