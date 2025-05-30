@@ -1,5 +1,12 @@
 package com.example.ogestor.controller;
 
-public class SignupController {
 
+import com.example.ogestor.componentes.Signup;
+
+public class SignupController {
+    private Signup signupJanela;
+
+    public void setLoginJanela(Signup signupJanela) {
+        this.signupJanela = signupJanela;
+    }
 }

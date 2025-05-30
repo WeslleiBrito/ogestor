@@ -1,26 +1,25 @@
 package com.example.ogestor.componentes;
 
 import com.example.ogestor.componentes.base.BaseJanela;
-import com.example.ogestor.controller.LoginController;
-
+import com.example.ogestor.controller.SignupController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 
-public class Login extends BaseJanela {
+public class Signup extends BaseJanela {
 
-    public Login() {
-        super(); // Não carrega diretamente via BaseJanela
-        configurarJanela();
+    public Signup() {
+        super();
+        configJanela();
     }
 
-    private void configurarJanela() {
+    private void configJanela() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/ogestor/windows/login/login.fxml"));
             Parent root = loader.load();
 
             // Pega o controller e injeta a instância Login
-            LoginController controller = loader.getController();
+            SignupController controller = loader.getController();
             controller.setLoginJanela(this);
 
             // Define cena e configurações do Stage

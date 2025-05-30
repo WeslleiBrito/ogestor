@@ -1,5 +1,7 @@
 package com.example.ogestor.controller;
 
+import com.example.ogestor.componentes.Login;
+import com.example.ogestor.componentes.Signup;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -13,6 +15,26 @@ public class LoginController {
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
     @FXML private Label messageLabel;
+    private Login loginJanela;
+
+    public void setLoginJanela(Login loginJanela) {
+        this.loginJanela = loginJanela;
+    }
+
+    @FXML
+    private void handleCallSignup(ActionEvent event) {
+        // abrir nova tela
+        new Signup().show();
+
+        // fechar esta
+        loginJanela.close();
+    }
+
+    @FXML
+    private void onEntrarClick(ActionEvent event) {
+        // lógica de login
+
+    }
 
     @FXML
     private void handleLoginAction() {
