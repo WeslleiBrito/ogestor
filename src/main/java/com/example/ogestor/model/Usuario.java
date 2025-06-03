@@ -4,13 +4,15 @@ public class Usuario {
 
     private final String id;
     private final String cpf;
+    private final String email;
     private String nome;
     private String senha;
     private String tipoUsuarioId;
 
-    public Usuario(String id, String cpf, String nome, String senha, String tipoUsuarioId) {
+    public Usuario(String id, String cpf, String email, String nome, String senha, String tipoUsuarioId) {
         this.id = id;
         this.cpf = cpf;
+        this.email = email;
         this.nome = nome;
         this.senha = senha;
         this.tipoUsuarioId = tipoUsuarioId;
@@ -26,6 +28,10 @@ public class Usuario {
 
     public String getNome() {
         return nome;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public String getSenha() {

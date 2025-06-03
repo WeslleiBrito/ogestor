@@ -6,6 +6,9 @@ import com.example.ogestor.controller.LoginController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import java.util.logging.Logger;
+import java.util.logging.Level;
+
 
 public class Login extends BaseJanela {
 
@@ -13,6 +16,7 @@ public class Login extends BaseJanela {
         super(); // Não carrega diretamente via BaseJanela
         configurarJanela();
     }
+    private static final Logger LOGGER = Logger.getLogger(Login.class.getName());
 
     private void configurarJanela() {
         try {
@@ -29,7 +33,7 @@ public class Login extends BaseJanela {
             getStage().setWidth(300);
             getStage().setHeight(400);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Erro ao carregar janela de cadastro", e);
         }
     }
 }

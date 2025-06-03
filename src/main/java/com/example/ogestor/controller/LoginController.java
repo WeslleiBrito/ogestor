@@ -1,17 +1,19 @@
 package com.example.ogestor.controller;
 
+import com.example.ogestor.DAO.UsuarioDAO;
 import com.example.ogestor.componentes.Login;
 import com.example.ogestor.componentes.Signup;
-import javafx.event.ActionEvent;
+import com.example.ogestor.model.Usuario;
+import com.example.ogestor.util.SenhaUtil;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+
+import java.util.List;
 
 
 public class LoginController {
 
-    @FXML private TextField usernameField;
+    @FXML private ComboBox<Usuario> usuarioComboBox;
     @FXML private PasswordField passwordField;
     @FXML private Label messageLabel;
     private Login loginJanela;
@@ -21,7 +23,7 @@ public class LoginController {
     }
 
     @FXML
-    private void handleCallSignup(ActionEvent event) {
+    private void handleCallSignup() {
         // abrir nova tela
         new Signup().show();
 
@@ -29,28 +31,63 @@ public class LoginController {
         loginJanela.close();
     }
     @FXML
-    private void handleExitAction(ActionEvent e) {
+    private void handleExitAction() {
         loginJanela.close();
-    }
-    @FXML
-    private void onEntrarClick(ActionEvent event) {
-        // lógica de login
-
     }
 
     @FXML
     private void handleLoginAction() {
-        String username = usernameField.getText();
+
+        String id = usuarioComboBox.getValue().getId();
         String password = passwordField.getText();
 
-        if ("admin".equals(username) && "1234".equals(password)) {
+        Usuario usuario = UsuarioDAO.buscarUsuarioPorId(id);
+
+        assert usuario != null;
+
+        boolean senhaValida = SenhaUtil.verificaSenha(password, usuario.getSenha());
+
+        if (senhaValida) {
             messageLabel.setText("Login bem-sucedido!");
             messageLabel.setTextFill(javafx.scene.paint.Color.GREEN);
-            // redirecionar para a próxima tela, se necessário
         } else {
             messageLabel.setText("Usuário ou senha incorretos.");
             messageLabel.setTextFill(javafx.scene.paint.Color.RED);
         }
+    }
+
+    @FXML
+    private void initialize() {
+
+        List<Usuario> usuarios = UsuarioDAO.buscarUsuarios();
+
+        for(Usuario usuario : usuarios){
+            usuarioComboBox.getItems().add(usuario);
+        }
+
+        usuarioComboBox.setCellFactory(lv -> new ListCell<>() {
+            @Override
+            protected void updateItem(Usuario usuario, boolean empty){
+                super.updateItem(usuario, empty);
+                if (empty || usuario == null) {
+                    setText(null);
+                } else {
+                    setText(usuario.getNome());
+                }
+            }
+        });
+
+        usuarioComboBox.setButtonCell(new ListCell<>() {
+            @Override
+            protected void updateItem(Usuario usuario, boolean empty) {
+                super.updateItem(usuario, empty);
+                if (empty || usuario == null) {
+                    setText(null);
+                } else {
+                    setText(usuario.getNome());
+                }
+            }
+        });
     }
 
 }

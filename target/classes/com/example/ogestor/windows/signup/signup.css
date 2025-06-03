@@ -1,0 +1,7 @@
+.text-field.erro,
+.password-field.erro {
+    -fx-border-color: red;
+    -fx-border-width: 2px;
+    -fx-background-color: #ffecec;
+    -fx-border-radios: 3px;
+}

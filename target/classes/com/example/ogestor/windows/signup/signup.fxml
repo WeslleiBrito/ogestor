@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
@@ -11,18 +7,25 @@
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
            fx:controller="com.example.ogestor.controller.SignupController"
+           stylesheets="@signup.css"
            >
     <children>
-        <VBox alignment="CENTER" spacing="15">
+        <VBox alignment="CENTER" spacing="5">
             <padding>
                 <Insets right="20" left="20"/>
             </padding>
             <children>
                 <Label fx:id="lblTitulo" text="Novo usuário" style="-fx-font-size: 24px;"/>
-                <TextField fx:id="nomeTextField" promptText="nome"/>
-                <TextField fx:id="emailTextField" promptText="email"/>
-                <TextField fx:id="cpfTextField" promptText="CPF"/>
-                <TextField fx:id="senhaTextField" promptText="senha"/>
+                <TextField fx:id="nomeTextField" promptText="nome" onKeyPressed="#removerStyloErro"/>
+                <Label fx:id="avisoNome" textFill="red"/>
+                <TextField fx:id="emailTextField" promptText="email" onKeyPressed="#removerStyloErro"/>
+                <Label fx:id="avisoEmail" textFill="red"/>
+                <TextField fx:id="cpfTextField" promptText="CPF" onKeyPressed="#removerStyloErro"/>
+                <Label fx:id="avisoCPF" textFill="red"/>
+                <PasswordField fx:id="senhaPasswordField" promptText="senha" onKeyPressed="#removerStyloErro"/>
+                <Label fx:id="avisoSenha" textFill="red"/>
+                <PasswordField fx:id="confirmaSenhaPasswordField" promptText="repita a senha" onKeyPressed="#removerStyloErro"/>
+                <Label fx:id="confirmarSenha" textFill="red"/>
                 <Button fx:id="cadastrarButton" text="Cadastrar" onAction="#handleRegister"/>
                 <HBox alignment="BASELINE_CENTER" spacing="30">
                     <Button fx:id="voltarButton" text="Voltar" onAction="#handleBack"/>

@@ -5,6 +5,9 @@ import com.example.ogestor.controller.SignupController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import java.util.logging.Logger;
+import java.util.logging.Level;
+
 
 public class Signup extends BaseJanela {
 
@@ -13,22 +16,22 @@ public class Signup extends BaseJanela {
         configJanela();
     }
 
+    private static final Logger LOGGER = Logger.getLogger(Signup.class.getName());
+
     private void configJanela() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/ogestor/windows/signup/signup.fxml"));
             Parent root = loader.load();
 
-            // Pega o controller e injeta a instância Login
             SignupController controller = loader.getController();
             controller.setJanelaSignup(this);
 
-            // Define cena e configurações do Stage
             getStage().setScene(new Scene(root));
             getStage().setResizable(false);
             getStage().setWidth(300);
-            getStage().setHeight(400);
+            getStage().setHeight(430);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Erro ao carregar janela de cadastro", e);
         }
     }
 }
