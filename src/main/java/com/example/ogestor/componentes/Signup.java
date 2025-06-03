@@ -15,12 +15,12 @@ public class Signup extends BaseJanela {
 
     private void configJanela() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/ogestor/windows/login/login.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/ogestor/windows/signup/signup.fxml"));
             Parent root = loader.load();
 
             // Pega o controller e injeta a instância Login
             SignupController controller = loader.getController();
-            controller.setLoginJanela(this);
+            controller.setJanelaSignup(this);
 
             // Define cena e configurações do Stage
             getStage().setScene(new Scene(root));

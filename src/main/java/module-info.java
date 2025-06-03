@@ -17,6 +17,7 @@ module com.example.ogestor {
     requires io.github.cdimascio.dotenv.java;
     requires org.xerial.sqlitejdbc;
     requires jakarta.validation;
+    requires org.hibernate.validator;
     opens com.example.ogestor.model to com.google.gson;
     opens com.example.ogestor to javafx.fxml;
     exports com.example.ogestor;
@@ -24,5 +25,5 @@ module com.example.ogestor {
     opens com.example.ogestor.controller;
     exports com.example.ogestor.componentes;
     opens com.example.ogestor.componentes;
-
+    opens com.example.ogestor.DTO to org.hibernate.validator;
 }

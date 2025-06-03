@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.geometry.Insets?>
+
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
            fx:controller="com.example.ogestor.controller.SignupController"
@@ -20,11 +21,12 @@
                 <Label fx:id="lblTitulo" text="Novo usuário" style="-fx-font-size: 24px;"/>
                 <TextField fx:id="nomeTextField" promptText="nome"/>
                 <TextField fx:id="emailTextField" promptText="email"/>
+                <TextField fx:id="cpfTextField" promptText="CPF"/>
                 <TextField fx:id="senhaTextField" promptText="senha"/>
-                <Button fx:id="cadastrarButton" text="Cadastrar"/>
+                <Button fx:id="cadastrarButton" text="Cadastrar" onAction="#handleRegister"/>
                 <HBox alignment="BASELINE_CENTER" spacing="30">
-                    <Button fx:id="voltarButton" text="Voltar"/>
-                    <Button fx:id="sairId" text="Sair"/>
+                    <Button fx:id="voltarButton" text="Voltar" onAction="#handleBack"/>
+                    <Button fx:id="sair" text="Sair" onAction="#handleExitAction"/>
                 </HBox>
             </children>
         </VBox>

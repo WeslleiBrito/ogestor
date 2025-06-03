@@ -39,6 +39,7 @@ public class Database {
                     CREATE TABLE IF NOT EXISTS usuario (
                         id TEXT PRIMARY KEY,
                         cpf TEXT NOT NULL UNIQUE,
+                        email TEXT NOT NULL UNIQUE,
                         nome TEXT NOT NULL,
                         senha TEXT NOT NULL,
                         tipoUsuarioId TEXT NOT NULL,

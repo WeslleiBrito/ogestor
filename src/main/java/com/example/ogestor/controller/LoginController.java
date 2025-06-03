@@ -4,11 +4,10 @@ import com.example.ogestor.componentes.Login;
 import com.example.ogestor.componentes.Signup;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
+
 
 public class LoginController {
 
@@ -29,7 +28,10 @@ public class LoginController {
         // fechar esta
         loginJanela.close();
     }
-
+    @FXML
+    private void handleExitAction(ActionEvent e) {
+        loginJanela.close();
+    }
     @FXML
     private void onEntrarClick(ActionEvent event) {
         // lógica de login
@@ -49,12 +51,6 @@ public class LoginController {
             messageLabel.setText("Usuário ou senha incorretos.");
             messageLabel.setTextFill(javafx.scene.paint.Color.RED);
         }
-    }
-
-    @FXML
-    private void handleExitAction(ActionEvent event) {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.close();
     }
 
 }
