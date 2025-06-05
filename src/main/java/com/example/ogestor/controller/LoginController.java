@@ -1,6 +1,7 @@
 package com.example.ogestor.controller;
 
 import com.example.ogestor.DAO.UsuarioDAO;
+import com.example.ogestor.componentes.Home;
 import com.example.ogestor.componentes.Login;
 import com.example.ogestor.componentes.Signup;
 import com.example.ogestor.model.Usuario;
@@ -48,8 +49,7 @@ public class LoginController {
         boolean senhaValida = SenhaUtil.verificaSenha(password, usuario.getSenha());
 
         if (senhaValida) {
-            messageLabel.setText("Login bem-sucedido!");
-            messageLabel.setTextFill(javafx.scene.paint.Color.GREEN);
+            openHome();
         } else {
             messageLabel.setText("Usuário ou senha incorretos.");
             messageLabel.setTextFill(javafx.scene.paint.Color.RED);
@@ -90,4 +90,8 @@ public class LoginController {
         });
     }
 
+    private void openHome() {
+        new Home().show();
+        loginJanela.close();
+    }
 }

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.ogestor.controller.HomeController"
+            prefHeight="400.0" prefWidth="600.0"
+            stylesheets="@style.css"
+>
+    <VBox>
+        <HBox fx:id="cards">
+            <VBox fx:id="cardFaturamento">
+                <Label fx:id="iconeFaturamento">
+                    <graphic >
+                        <ImageView fitWidth="30" fitHeight="30">
+                            <Image url="@../../icons/home/faturamento.png"/>
+                        </ImageView>
+                    </graphic>
+                </Label>
+                <Label text="Faturamento"/>
+                <Label fx:id="lblValorFaturamento"/>
+            </VBox>
+            <VBox fx:id="cardCusto">
+                <Label fx:id="iconeCusto">
+                    <graphic>
+                        <ImageView fitWidth="30" fitHeight="30">
+                            <Image url="@../../icons/home/custo.png"/>
+                        </ImageView>
+                    </graphic>
+                </Label>
+                <Label text="Custo"/>
+                <Label fx:id="lblValorCusto"/>
+            </VBox>
+            <VBox fx:id="cardDespesaFixa">
+                <Label fx:id="iconeDespesaFixa">
+                    <graphic>
+                        <ImageView fitWidth="30" fitHeight="30">
+                            <Image url="@../../icons/home/despesa_fixa.png"/>
+                        </ImageView>
+                    </graphic>
+                </Label>
+                <Label text="Despesa Fixa"/>
+                <Label fx:id="lblValorDespesaFixa"/>
+            </VBox>
+            <VBox fx:id="cardDespesaVariavel">
+                <Label fx:id="iconeDespesaVariavel">
+                    <graphic>
+                        <ImageView fitWidth="30" fitHeight="30">
+                            <Image url="@../../icons/home/despesa_variavel.png"/>
+                        </ImageView>
+                    </graphic>
+                </Label>
+                <Label text="Despesa Variável"/>
+                <Label fx:id="lblValorVariavel"/>
+            </VBox>
+            <VBox fx:id="cardLucroMonetario">
+                <Label fx:id="iconeLucroMonetario">
+                    <graphic>
+                        <ImageView fitWidth="30" fitHeight="30">
+                            <Image url="@../../icons/home/lucro_monetario.png"/>
+                        </ImageView>
+                    </graphic>
+                </Label>
+                <Label text="Lucro Monetário"/>
+                <Label fx:id="lblValorLucroMonetario"/>
+            </VBox>
+            <VBox fx:id="cardLucroPercentual">
+                <Label fx:id="iconeLucroPercentual">
+                    <graphic>
+                        <ImageView fitWidth="30" fitHeight="30">
+                            <Image url="@../../icons/home/lucro_percentual.png"/>
+                        </ImageView>
+                    </graphic>
+                </Label>
+                <Label text="Lucro %"/>
+                <Label fx:id="lblValorLucroPercentual"/>
+            </VBox>
+        </HBox>
+    </VBox>
+</AnchorPane>

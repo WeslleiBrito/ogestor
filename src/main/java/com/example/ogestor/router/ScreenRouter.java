@@ -1,5 +1,6 @@
 package com.example.ogestor.router;
 
+import com.example.ogestor.componentes.Home;
 import com.example.ogestor.componentes.Login;
 import com.example.ogestor.model.Screen;
 import javafx.fxml.FXMLLoader;
@@ -16,5 +17,9 @@ public class ScreenRouter {
 
     public static Login login() {
         return new Login();
+    }
+
+    public static Home home() {
+        return new Home();
     }
 }

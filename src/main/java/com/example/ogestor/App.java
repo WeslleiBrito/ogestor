@@ -1,5 +1,6 @@
 package com.example.ogestor;
 
+import com.example.ogestor.componentes.Home;
 import com.example.ogestor.componentes.Login;
 import com.example.ogestor.componentes.Signup;
 import com.example.ogestor.router.ScreenRouter;
@@ -11,8 +12,8 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) {
         Database.inicializar();
-        Login login = ScreenRouter.login();
-        login.show();
+        Home home = ScreenRouter.home();
+        home.show();
     }
 
     public static void main(String[] args) {
