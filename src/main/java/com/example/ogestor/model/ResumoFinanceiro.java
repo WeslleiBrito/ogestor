@@ -1,26 +1,27 @@
 package com.example.ogestor.model;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class ResumoFinanceiro {
-    private final double faturamento;
-    private final double custo;
-    private final double desconto;
-    private final double despesa_fixa;
-    private final double despesa_variavel;
-    private final double lucro_rs;
-    private final double lucro_percentual;
+    private final BigDecimal faturamento;
+    private final BigDecimal custo;
+    private final BigDecimal desconto;
+    private final BigDecimal despesa_fixa;
+    private final BigDecimal despesa_variavel;
+    private final BigDecimal lucro_rs;
+    private final BigDecimal lucro_percentual;
     private final List<String> periodo;
     
     
     public ResumoFinanceiro (
-            double faturamento,
-            double custo,
-            double desconto,
-            double despesaFixa,
-            double despesaVariavel,
-            double lucroRS,
-            double lucroPorcentagem,
+            BigDecimal faturamento,
+            BigDecimal custo,
+            BigDecimal desconto,
+            BigDecimal despesaFixa,
+            BigDecimal despesaVariavel,
+            BigDecimal lucroRS,
+            BigDecimal lucroPorcentagem,
             List<String> periodo
     ){
         this.faturamento = faturamento;
@@ -34,31 +35,31 @@ public class ResumoFinanceiro {
         
     }
 
-    public double getFaturamento() {
+    public BigDecimal getFaturamento() {
         return faturamento;
     }
 
-    public double getCusto() {
+    public BigDecimal getCusto() {
         return custo;
     }
 
-    public double getDesconto() {
+    public BigDecimal getDesconto() {
         return desconto;
     }
 
-    public double getDespesaFixa() {
+    public BigDecimal getDespesaFixa() {
         return despesa_fixa;
     }
 
-    public double getDespesaVariavel() {
+    public BigDecimal getDespesaVariavel() {
         return despesa_variavel;
     }
 
-    public double getLucroRs() {
+    public BigDecimal getLucroRs() {
         return lucro_rs;
     }
 
-    public double getLucroPercentual() {
+    public BigDecimal getLucroPercentual() {
         return lucro_percentual;
     }
 

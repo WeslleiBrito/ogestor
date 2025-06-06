@@ -18,6 +18,7 @@ module com.example.ogestor {
     requires org.xerial.sqlitejdbc;
     requires jakarta.validation;
     requires org.hibernate.validator;
+    requires java.desktop;
     opens com.example.ogestor.model to com.google.gson;
     opens com.example.ogestor to javafx.fxml;
     exports com.example.ogestor;

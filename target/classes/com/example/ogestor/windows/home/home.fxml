@@ -1,87 +1,186 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
-<?import javafx.scene.image.ImageView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.Image?>
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.ogestor.controller.HomeController"
-            prefHeight="400.0" prefWidth="600.0"
-            stylesheets="@style.css"
->
-    <VBox>
-        <HBox fx:id="cards">
-            <VBox fx:id="cardFaturamento">
-                <Label fx:id="iconeFaturamento">
-                    <graphic >
-                        <ImageView fitWidth="30" fitHeight="30">
-                            <Image url="@../../icons/home/faturamento.png"/>
-                        </ImageView>
-                    </graphic>
-                </Label>
-                <Label text="Faturamento"/>
-                <Label fx:id="lblValorFaturamento"/>
-            </VBox>
-            <VBox fx:id="cardCusto">
-                <Label fx:id="iconeCusto">
-                    <graphic>
-                        <ImageView fitWidth="30" fitHeight="30">
-                            <Image url="@../../icons/home/custo.png"/>
-                        </ImageView>
-                    </graphic>
-                </Label>
-                <Label text="Custo"/>
-                <Label fx:id="lblValorCusto"/>
-            </VBox>
-            <VBox fx:id="cardDespesaFixa">
-                <Label fx:id="iconeDespesaFixa">
-                    <graphic>
-                        <ImageView fitWidth="30" fitHeight="30">
-                            <Image url="@../../icons/home/despesa_fixa.png"/>
-                        </ImageView>
-                    </graphic>
-                </Label>
-                <Label text="Despesa Fixa"/>
-                <Label fx:id="lblValorDespesaFixa"/>
-            </VBox>
-            <VBox fx:id="cardDespesaVariavel">
-                <Label fx:id="iconeDespesaVariavel">
-                    <graphic>
-                        <ImageView fitWidth="30" fitHeight="30">
-                            <Image url="@../../icons/home/despesa_variavel.png"/>
-                        </ImageView>
-                    </graphic>
-                </Label>
-                <Label text="Despesa Variável"/>
-                <Label fx:id="lblValorVariavel"/>
-            </VBox>
-            <VBox fx:id="cardLucroMonetario">
-                <Label fx:id="iconeLucroMonetario">
-                    <graphic>
-                        <ImageView fitWidth="30" fitHeight="30">
-                            <Image url="@../../icons/home/lucro_monetario.png"/>
-                        </ImageView>
-                    </graphic>
-                </Label>
-                <Label text="Lucro Monetário"/>
-                <Label fx:id="lblValorLucroMonetario"/>
-            </VBox>
-            <VBox fx:id="cardLucroPercentual">
-                <Label fx:id="iconeLucroPercentual">
-                    <graphic>
-                        <ImageView fitWidth="30" fitHeight="30">
-                            <Image url="@../../icons/home/lucro_percentual.png"/>
-                        </ImageView>
-                    </graphic>
-                </Label>
-                <Label text="Lucro %"/>
-                <Label fx:id="lblValorLucroPercentual"/>
-            </VBox>
-        </HBox>
-    </VBox>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ogestor.controller.HomeController">
+
+    <HBox fx:id="cards" alignment="CENTER" spacing="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+
+        <StackPane prefHeight="140.0" prefWidth="140.0" style="-fx-background-color: #ffffff; -fx-background-radius: 15; -fx-border-color: #cccccc; -fx-border-width: 1; -fx-border-radius: 15;">
+            <children>
+                <VBox fx:id="cardFaturamento" blendMode="SRC_ATOP" maxHeight="-Infinity" maxWidth="-Infinity" spacing="5.0" StackPane.alignment="CENTER">
+                    <Label fx:id="iconeFaturamento">
+                        <graphic>
+                            <ImageView fitHeight="50.0" fitWidth="50.0">
+                                <Image url="@../../icons/home/faturamento.png" />
+                                <viewport>
+                                    <Rectangle2D />
+                                </viewport>
+                            </ImageView>
+                        </graphic>
+                    </Label>
+                    <Label text="Faturamento">
+                        <font><Font name="Tahoma Bold" size="14.0" /></font>
+                    </Label>
+                    <Label fx:id="lblValorFaturamento" text="valor">
+                        <font><Font name="Trebuchet MS Bold" size="16.0" /></font>
+                    </Label>
+                    <cursor><Cursor fx:constant="DEFAULT" /></cursor>
+                    <effect><Blend /></effect>
+                </VBox>
+            </children>
+         <effect>
+            <ColorAdjust />
+         </effect>
+        </StackPane>
+
+        <StackPane prefHeight="140.0" prefWidth="140.0" style="-fx-background-color: #ffffff; -fx-background-radius: 15; -fx-border-color: #cccccc; -fx-border-width: 1; -fx-border-radius: 15;">
+            <children>
+                <VBox fx:id="cardCusto" blendMode="SRC_ATOP" maxHeight="-Infinity" maxWidth="-Infinity" spacing="5.0" StackPane.alignment="CENTER">
+                    <Label fx:id="iconeCusto">
+                        <graphic>
+                            <ImageView fitHeight="50.0" fitWidth="50.0">
+                                <Image url="@../../icons/home/custo.png" />
+                                <viewport><Rectangle2D /></viewport>
+                            </ImageView>
+                        </graphic>
+                    </Label>
+                    <Label text="Custo">
+                        <font><Font name="Tahoma Bold" size="14.0" /></font>
+                    </Label>
+                    <Label fx:id="lblValorCusto" text="valor">
+                        <font><Font name="Trebuchet MS Bold" size="16.0" /></font>
+                    </Label>
+                    <cursor><Cursor fx:constant="DEFAULT" /></cursor>
+                    <effect><Blend /></effect>
+                </VBox>
+            </children>
+         <effect>
+            <ColorAdjust />
+         </effect>
+        </StackPane>
+
+        <StackPane prefHeight="140.0" prefWidth="140.0" style="-fx-background-color: #ffffff; -fx-background-radius: 15; -fx-border-color: #cccccc; -fx-border-width: 1; -fx-border-radius: 15;">
+            <children>
+                <VBox fx:id="cardDespesaFixa" blendMode="SRC_ATOP" maxHeight="-Infinity" maxWidth="-Infinity" spacing="5.0" StackPane.alignment="CENTER">
+                    <Label fx:id="iconeDespesaFixa">
+                        <graphic>
+                            <ImageView fitHeight="50.0" fitWidth="50.0">
+                                <Image url="@../../icons/home/despesa_fixa.png" />
+                                <viewport><Rectangle2D /></viewport>
+                            </ImageView>
+                        </graphic>
+                    </Label>
+                    <Label text="Despesa Fixa">
+                        <font><Font name="Tahoma Bold" size="14.0" /></font>
+                    </Label>
+                    <Label fx:id="lblValorDespesaFixa" text="valor">
+                        <font><Font name="Trebuchet MS Bold" size="16.0" /></font>
+                    </Label>
+                    <cursor><Cursor fx:constant="DEFAULT" /></cursor>
+                    <effect><Blend /></effect>
+                </VBox>
+            </children>
+         <effect>
+            <ColorAdjust />
+         </effect>
+        </StackPane>
+
+        <StackPane prefHeight="140.0" prefWidth="140.0" style="-fx-background-color: #ffffff; -fx-background-radius: 15; -fx-border-color: #cccccc; -fx-border-width: 1; -fx-border-radius: 15;">
+            <children>
+                <VBox fx:id="cardDespesaVariavel" blendMode="SRC_ATOP" maxHeight="-Infinity" maxWidth="-Infinity" spacing="5.0" StackPane.alignment="CENTER">
+                    <Label fx:id="iconeDespesaVariavel">
+                        <graphic>
+                            <ImageView fitHeight="50.0" fitWidth="50.0">
+                                <Image url="@../../icons/home/despesa_variavel.png" />
+                                <viewport><Rectangle2D /></viewport>
+                            </ImageView>
+                        </graphic>
+                    </Label>
+                    <Label text="Despesa Variável">
+                        <font><Font name="Tahoma Bold" size="14.0" /></font>
+                    </Label>
+                    <Label fx:id="lblValorVariavel" text="valor">
+                        <font><Font name="Trebuchet MS Bold" size="16.0" /></font>
+                    </Label>
+                    <cursor><Cursor fx:constant="DEFAULT" /></cursor>
+                    <effect><Blend /></effect>
+                </VBox>
+            </children>
+         <effect>
+            <ColorAdjust />
+         </effect>
+        </StackPane>
+
+        <StackPane prefHeight="140.0" prefWidth="140.0" style="-fx-background-color: #ffffff; -fx-background-radius: 15; -fx-border-color: #cccccc; -fx-border-width: 1; -fx-border-radius: 15;">
+            <children>
+                <VBox fx:id="cardLucroMonetario" blendMode="SRC_ATOP" maxHeight="-Infinity" maxWidth="-Infinity" spacing="5.0" StackPane.alignment="CENTER">
+                    <Label fx:id="iconeLucroMonetario">
+                        <graphic>
+                            <ImageView fitHeight="50.0" fitWidth="50.0">
+                                <Image url="@../../icons/home/lucro_monetario.png" />
+                                <viewport><Rectangle2D /></viewport>
+                            </ImageView>
+                        </graphic>
+                    </Label>
+                    <Label text="Lucro Monetário">
+                        <font><Font name="Tahoma Bold" size="14.0" /></font>
+                    </Label>
+                    <Label fx:id="lblValorLucroMonetario" text="valor">
+                        <font><Font name="Trebuchet MS Bold" size="16.0" /></font>
+                    </Label>
+                    <cursor><Cursor fx:constant="DEFAULT" /></cursor>
+                    <effect><Blend /></effect>
+                </VBox>
+            </children>
+         <effect>
+            <ColorAdjust />
+         </effect>
+        </StackPane>
+
+        <StackPane prefHeight="140.0" prefWidth="140.0" style="-fx-background-color: #ffffff; -fx-background-radius: 15; -fx-border-color: #cccccc; -fx-border-width: 1; -fx-border-radius: 15;">
+            <children>
+                <VBox fx:id="cardLucroPercentual" blendMode="SRC_ATOP" maxHeight="-Infinity" maxWidth="-Infinity" spacing="5.0" StackPane.alignment="CENTER">
+                    <Label fx:id="iconeLucroPercentual">
+                        <graphic>
+                            <ImageView fitHeight="50.0" fitWidth="50.0">
+                                <Image url="@../../icons/home/lucro_percentual.png" />
+                                <viewport><Rectangle2D /></viewport>
+                            </ImageView>
+                        </graphic>
+                    </Label>
+                    <Label text="Lucro %">
+                        <font><Font name="Tahoma Bold" size="14.0" /></font>
+                    </Label>
+                    <Label fx:id="lblValorLucroPercentual" text="valor">
+                        <font><Font name="Trebuchet MS Bold" size="16.0" /></font>
+                    </Label>
+                    <cursor><Cursor fx:constant="DEFAULT" /></cursor>
+                    <effect><Blend /></effect>
+                </VBox>
+            </children>
+         <effect>
+            <ColorAdjust />
+         </effect>
+        </StackPane>
+      <opaqueInsets>
+         <Insets />
+      </opaqueInsets>
+
+    </HBox>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
 </AnchorPane>
