@@ -2,12 +2,8 @@ package com.example.ogestor.controller;
 
 import com.example.ogestor.api.ResumoService;
 import com.example.ogestor.componentes.Home;
-import com.example.ogestor.model.ResumoFinanceiro;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-
-import javax.swing.*;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -34,18 +30,25 @@ public class HomeController {
     private void initialize() {
         try {
             ResumoService resumoService = new ResumoService();
-            ResumoFinanceiro resumoFinanceiro = resumoService.getResumoFinanceiro();
-            Locale locale = Locale.forLanguageTag("pt-BR");
-            NumberFormat moedaBr = NumberFormat.getCurrencyInstance(locale);
-            NumberFormat numeroBr = NumberFormat.getNumberInstance(locale);
-            lblValorFaturamento.setText(moedaBr.format(resumoFinanceiro.getFaturamento()));
-            lblValorCusto.setText(moedaBr.format(resumoFinanceiro.getCusto()));
-            lblValorDespesaFixa.setText(moedaBr.format(resumoFinanceiro.getDespesaFixa()));
-            lblValorVariavel.setText(moedaBr.format(resumoFinanceiro.getDespesaVariavel()));
-            lblValorLucroMonetario.setText(moedaBr.format(resumoFinanceiro.getLucroRs()));
-            lblValorLucroPercentual.setText(
-                    numeroBr.format(resumoFinanceiro.getLucroPercentual().multiply(new BigDecimal("100")))
-            + " %");
+            var resumo = resumoService.getResumoFinanceiro();
+
+            if(resumo.isPresent()) {
+
+                Locale locale = Locale.forLanguageTag("pt-BR");
+                NumberFormat moedaBr = NumberFormat.getCurrencyInstance(locale);
+                NumberFormat numeroBr = NumberFormat.getNumberInstance(locale);
+                lblValorFaturamento.setText(moedaBr.format(resumo.get().getFaturamento()));
+                lblValorCusto.setText(moedaBr.format(resumo.get().getCusto()));
+                lblValorDespesaFixa.setText(moedaBr.format(resumo.get().getDespesaFixa()));
+                lblValorVariavel.setText(moedaBr.format(resumo.get().getDespesaVariavel()));
+                lblValorLucroMonetario.setText(moedaBr.format(resumo.get().getLucroRs()));
+                lblValorLucroPercentual.setText(
+                        numeroBr.format(resumo.get().getLucroPercentual().multiply(new BigDecimal("100")))
+                                + " %");
+            }else {
+                throw new Exception("Erro de conexão com a API");
+            }
+
         }catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Erro ao carregar os dados da API", e);
         }
