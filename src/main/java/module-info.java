@@ -19,6 +19,7 @@ module com.example.ogestor {
     requires jakarta.validation;
     requires org.hibernate.validator;
     requires java.desktop;
+    requires annotations;
     opens com.example.ogestor.model to com.google.gson;
     opens com.example.ogestor to javafx.fxml;
     exports com.example.ogestor;
