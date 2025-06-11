@@ -7,6 +7,7 @@ import com.example.ogestor.model.RetornoFaturamento;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
@@ -19,6 +20,7 @@ import java.util.logging.Logger;
 
 public class HomeController {
 
+    @FXML private ListView<String> listaResumoFaturamento;
     @FXML private DatePicker dataFinal;
     @FXML private DatePicker dataInicial;
     @FXML private Label lblValorLucroPercentual;
@@ -73,7 +75,7 @@ public class HomeController {
     private void initialize() {
         try {
             var resumo = buscarDadosValoresTotalPadrao();
-
+            this.updateResumoListaFaturamento();
             if(resumo.isPresent()) {
                 updateValorTotalMensal(resumo.get());
             }else {
@@ -111,6 +113,14 @@ public class HomeController {
 
         lblValorFaturamento.setText(moedaBr.format(retornoFaturamento.getFaturamento()));
         lblValorCusto.setText(moedaBr.format(retornoFaturamento.getCusto()));
+    }
+
+    private void updateResumoListaFaturamento() {
+
+        listaResumoFaturamento.getItems().add("Teste 1");
+        listaResumoFaturamento.getItems().add("Teste 2");
+        listaResumoFaturamento.getItems().add("Teste 3");
+        listaResumoFaturamento.getItems().add("Teste 4");
     }
 
 }

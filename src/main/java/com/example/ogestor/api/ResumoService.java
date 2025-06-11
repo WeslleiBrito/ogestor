@@ -2,6 +2,8 @@ package com.example.ogestor.api;
 
 import com.example.ogestor.model.ResumoFinanceiro;
 import com.example.ogestor.model.RetornoFaturamento;
+import com.example.ogestor.model.RetornoTotalFaturamento;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpRequest;
@@ -78,4 +80,41 @@ public class ResumoService extends BaseAPI {
         return Optional.empty();
     }
 
+
+    public Optional<RetornoTotalFaturamento> getResumoTotalFaturamento(LocalDate dataInicial, LocalDate dataFinal) {
+        try {
+
+            String url = String.format(
+                    "%svendas/resumo-total-venda?data_inicial=%s&data_final=%s",
+                    baseUrl,
+                    dataInicial.toString(),
+                    dataFinal.toString()
+            );
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = client.send(
+                    request,
+                    HttpResponse.BodyHandlers.ofString()
+            );
+
+            if (response.statusCode() == 200) {
+                return Optional.ofNullable(
+                        gson.fromJson(
+                                response.body(),
+                                RetornoTotalFaturamento.class
+                        )
+                );
+            } else {
+                System.err.println("Erro: código " + response.statusCode());
+            }
+        } catch (IOException | InterruptedException e) {
+            System.err.println("Erro ao acessar API: " + e.getMessage());
+        }
+
+        return Optional.empty();
+    }
 }
