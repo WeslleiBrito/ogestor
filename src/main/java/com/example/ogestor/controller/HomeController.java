@@ -4,10 +4,10 @@ import com.example.ogestor.api.ResumoService;
 import com.example.ogestor.componentes.Home;
 import com.example.ogestor.model.ResumoFinanceiro;
 import com.example.ogestor.model.RetornoFaturamento;
+import com.example.ogestor.model.RetornoTotalFaturamento;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
@@ -20,7 +20,14 @@ import java.util.logging.Logger;
 
 public class HomeController {
 
-    @FXML private ListView<String> listaResumoFaturamento;
+
+    @FXML private Label lucroPercentualMensal;
+    @FXML private Label lucroRsMensal;
+    @FXML private Label despesaVariavelMensal;
+    @FXML private Label despesaFixaMensal;
+    @FXML private Label custoMensal;
+    @FXML private Label faturamentoMensal;
+    @FXML private Label lblValorComissao;
     @FXML private DatePicker dataFinal;
     @FXML private DatePicker dataInicial;
     @FXML private Label lblValorLucroPercentual;
@@ -29,6 +36,10 @@ public class HomeController {
     @FXML private Label lblValorDespesaFixa;
     @FXML private Label lblValorCusto;
     @FXML private Label lblValorFaturamento;
+    private final Locale locale = Locale.forLanguageTag("pt-BR");
+    private final NumberFormat moedaBr = NumberFormat.getCurrencyInstance(locale);
+    private final NumberFormat numeroBr = NumberFormat.getNumberInstance(locale);
+
     private Home janelaHome;
     private static final Logger LOGGER = Logger.getLogger(HomeController.class.getName());
 
@@ -74,10 +85,18 @@ public class HomeController {
     @FXML
     private void initialize() {
         try {
-            var resumo = buscarDadosValoresTotalPadrao();
-            this.updateResumoListaFaturamento();
-            if(resumo.isPresent()) {
-                updateValorTotalMensal(resumo.get());
+            var resumoMensal = buscarDadosValoresTotalPadrao();
+
+            if(resumoMensal.isPresent()) {
+                updateValorTotalMensal(resumoMensal.get());
+            }else {
+                throw new Exception("Erro de conexão com a API");
+            }
+
+            var resumoDiario = buscarValorPorData();
+
+            if(resumoDiario.isPresent()) {
+                updateValorDiario(resumoDiario.get());
             }else {
                 throw new Exception("Erro de conexão com a API");
             }
@@ -92,35 +111,40 @@ public class HomeController {
         return resumoService.getResumoFinanceiro();
     }
 
+    private Optional<RetornoTotalFaturamento> buscarValorPorData() {
+        ResumoService resumoService = new ResumoService();
+        return resumoService.getResumoTotalFaturamento();
+    }
+
     private void updateValorTotalMensal(@NotNull ResumoFinanceiro resumo) {
-        Locale locale = Locale.forLanguageTag("pt-BR");
-        NumberFormat moedaBr = NumberFormat.getCurrencyInstance(locale);
-        NumberFormat numeroBr = NumberFormat.getNumberInstance(locale);
-        lblValorFaturamento.setText(moedaBr.format(resumo.getFaturamento()));
-        lblValorCusto.setText(moedaBr.format(resumo.getCusto()));
-        lblValorDespesaFixa.setText(moedaBr.format(resumo.getDespesaFixa()));
-        lblValorVariavel.setText(moedaBr.format(resumo.getDespesaVariavel()));
-        lblValorLucroMonetario.setText(moedaBr.format(resumo.getLucroRs()));
-        lblValorLucroPercentual.setText(
+
+        faturamentoMensal.setText("Faturamento: " + moedaBr.format(resumo.getFaturamento()));
+        custoMensal.setText("Custo " + moedaBr.format(resumo.getCusto()));
+        despesaVariavelMensal.setText("Despesa variável: " + moedaBr.format(resumo.getDespesaVariavel()));
+        despesaFixaMensal.setText("Despesa Fixa: " + moedaBr.format(resumo.getDespesaFixa()));
+        lucroRsMensal.setText("Lucro Monetário: " + moedaBr.format(resumo.getLucroRs()));
+        lucroPercentualMensal.setText("Lucro %: " +
                 numeroBr.format(resumo.getLucroPercentual().multiply(new BigDecimal("100")))
                         + " %");
     }
 
+    private void updateValorDiario(@NotNull RetornoTotalFaturamento retorno) {
+        System.out.println(retorno);
+        lblValorFaturamento.setText(moedaBr.format(retorno.getFaturamento()));
+        lblValorCusto.setText(moedaBr.format(retorno.getCusto()));
+        lblValorComissao.setText(moedaBr.format(retorno.getComissao()));
+        lblValorVariavel.setText( moedaBr.format(retorno.getDespesa_variavel()));
+        lblValorDespesaFixa.setText(moedaBr.format(retorno.getDespesa_fixa()));
+        lblValorLucroMonetario.setText(moedaBr.format(retorno.getLucro()));
+        lblValorLucroPercentual.setText(
+                numeroBr.format(retorno.getLucro_percentual().multiply(new BigDecimal("100")))
+                + " %");
+    }
+
     private void updateFaturamento(@NotNull RetornoFaturamento retornoFaturamento) {
-        Locale locale = Locale.forLanguageTag("pt-BR");
-        NumberFormat moedaBr = NumberFormat.getCurrencyInstance(locale);
-        NumberFormat numeroBr = NumberFormat.getNumberInstance(locale);
 
         lblValorFaturamento.setText(moedaBr.format(retornoFaturamento.getFaturamento()));
         lblValorCusto.setText(moedaBr.format(retornoFaturamento.getCusto()));
-    }
-
-    private void updateResumoListaFaturamento() {
-
-        listaResumoFaturamento.getItems().add("Teste 1");
-        listaResumoFaturamento.getItems().add("Teste 2");
-        listaResumoFaturamento.getItems().add("Teste 3");
-        listaResumoFaturamento.getItems().add("Teste 4");
     }
 
 }

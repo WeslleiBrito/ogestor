@@ -6,7 +6,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.effect.Blend?>
@@ -96,42 +95,45 @@
                   <ColorAdjust />
                </effect>
               </StackPane>
-      
-              <StackPane prefHeight="140.0" prefWidth="140.0" style="-fx-background-color: #ffffff; -fx-background-radius: 15; -fx-border-color: #cccccc; -fx-border-width: 1; -fx-border-radius: 15;">
-                  <children>
-                      <VBox fx:id="cardDespesaFixa" blendMode="SRC_ATOP" maxHeight="-Infinity" maxWidth="-Infinity" spacing="5.0" StackPane.alignment="CENTER">
-                          <Label fx:id="iconeDespesaFixa">
-                              <graphic>
-                                  <ImageView fitHeight="50.0" fitWidth="50.0">
-                                      <Image url="@../../icons/home/despesa_fixa.png" />
-                                      <viewport>
-                                 <Rectangle2D />
-                              </viewport>
-                                  </ImageView>
-                              </graphic>
-                          </Label>
-                          <Label text="Despesa Fixa">
-                              <font>
-                           <Font name="Tahoma Bold" size="14.0" />
-                        </font>
-                          </Label>
-                          <Label fx:id="lblValorDespesaFixa" text="valor">
-                              <font>
-                           <Font name="Trebuchet MS Bold" size="16.0" />
-                        </font>
-                          </Label>
-                          <cursor>
+            <StackPane layoutX="760.0" layoutY="10.0" prefHeight="140.0" prefWidth="140.0" style="-fx-background-color: #ffffff; -fx-background-radius: 15; -fx-border-color: #cccccc; -fx-border-width: 1; -fx-border-radius: 15;">
+               <children>
+                  <VBox fx:id="cardComissao" blendMode="SRC_ATOP" maxHeight="-Infinity" maxWidth="-Infinity" spacing="5.0" StackPane.alignment="CENTER">
+                     <cursor>
                         <Cursor fx:constant="DEFAULT" />
                      </cursor>
-                          <effect>
+                     <effect>
                         <Blend />
                      </effect>
-                      </VBox>
-                  </children>
+                     <children>
+                        <Label fx:id="iconeComissao">
+                           <graphic>
+                              <ImageView fitHeight="50.0" fitWidth="50.0">
+                                 <viewport>
+                                    <Rectangle2D />
+                                 </viewport>
+                                 <image>
+                                    <Image url="@../../icons/home/comissao.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Label>
+                        <Label text="Comissão">
+                           <font>
+                              <Font name="Tahoma Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblValorComissao" text="valor">
+                           <font>
+                              <Font name="Trebuchet MS Bold" size="16.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+               </children>
                <effect>
                   <ColorAdjust />
                </effect>
-              </StackPane>
+            </StackPane>
       
               <StackPane prefHeight="140.0" prefWidth="140.0" style="-fx-background-color: #ffffff; -fx-background-radius: 15; -fx-border-color: #cccccc; -fx-border-width: 1; -fx-border-radius: 15;">
                   <children>
@@ -152,6 +154,42 @@
                         </font>
                           </Label>
                           <Label fx:id="lblValorVariavel" text="valor">
+                              <font>
+                           <Font name="Trebuchet MS Bold" size="16.0" />
+                        </font>
+                          </Label>
+                          <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor>
+                          <effect>
+                        <Blend />
+                     </effect>
+                      </VBox>
+                  </children>
+               <effect>
+                  <ColorAdjust />
+               </effect>
+              </StackPane>
+      
+              <StackPane prefHeight="140.0" prefWidth="140.0" style="-fx-background-color: #ffffff; -fx-background-radius: 15; -fx-border-color: #cccccc; -fx-border-width: 1; -fx-border-radius: 15;">
+                  <children>
+                      <VBox fx:id="cardDespesaFixa" blendMode="SRC_ATOP" maxHeight="-Infinity" maxWidth="-Infinity" spacing="5.0" StackPane.alignment="CENTER">
+                          <Label fx:id="iconeDespesaFixa">
+                              <graphic>
+                                  <ImageView fitHeight="50.0" fitWidth="50.0">
+                                      <Image url="@../../icons/home/despesa_fixa.png" />
+                                      <viewport>
+                                 <Rectangle2D />
+                              </viewport>
+                                  </ImageView>
+                              </graphic>
+                          </Label>
+                          <Label text="Despesa Fixa">
+                              <font>
+                           <Font name="Tahoma Bold" size="14.0" />
+                        </font>
+                          </Label>
+                          <Label fx:id="lblValorDespesaFixa" text="valor">
                               <font>
                            <Font name="Trebuchet MS Bold" size="16.0" />
                         </font>
@@ -264,19 +302,19 @@
             </VBox.margin>
       
           </HBox>
-         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="SOMETIMES">
+         <HBox alignment="CENTER">
             <children>
                <TableView tableMenuButtonVisible="true">
                  <columns>
-                   <TableColumn prefWidth="75.0" text="Código" />
-                   <TableColumn editable="false" prefWidth="500.0" text="Produto" />
-                     <TableColumn minWidth="0.0" prefWidth="75.0" text="Quantidade" />
-                     <TableColumn minWidth="0.0" prefWidth="0.0" text="Custo" />
-                     <TableColumn prefWidth="75.0" text="Comissão" />
-                     <TableColumn prefWidth="125.0" text="Despesa Variável" />
-                     <TableColumn prefWidth="125.0" text="Despesa Fixa" />
-                     <TableColumn prefWidth="75.0" text="Lucro R$" />
-                     <TableColumn prefWidth="75.0" text="Lucro %" />
+                   <TableColumn text="Código" />
+                   <TableColumn editable="false" text="Produto" />
+                     <TableColumn editable="false" text="Quantidade" />
+                     <TableColumn minWidth="0.0" text="Custo" />
+                     <TableColumn text="Comissão" />
+                     <TableColumn text="Despesa Variável" />
+                     <TableColumn text="Despesa Fixa" />
+                     <TableColumn text="Lucro R$" />
+                     <TableColumn text="Lucro %" />
                  </columns>
                   <padding>
                      <Insets bottom="30.0" />
@@ -285,7 +323,25 @@
                      <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                   </columnResizePolicy>
                </TableView>
-               <ListView fx:id="listaResumoFaturamento" prefHeight="200.0" prefWidth="200.0" />
+               <VBox prefHeight="400.0" prefWidth="226.0">
+                  <children>
+                     <Label text="Resumo Mensal">
+                        <VBox.margin>
+                           <Insets bottom="10.0" />
+                        </VBox.margin>
+                     </Label>
+                     <VBox spacing="5.0">
+                        <children>
+                           <Label fx:id="faturamentoMensal" text="Faturamento" />
+                           <Label fx:id="custoMensal" text="Custo" />
+                           <Label fx:id="despesaFixaMensal" layoutX="10.0" layoutY="54.0" text="Despesa Fixa" />
+                           <Label fx:id="despesaVariavelMensal" layoutX="10.0" layoutY="71.0" text="Despesa Variável" />
+                           <Label fx:id="lucroRsMensal" layoutX="10.0" layoutY="88.0" text="Lucro R$" />
+                           <Label fx:id="lucroPercentualMensal" layoutX="10.0" layoutY="88.0" text="Lucro R$" />
+                        </children>
+                     </VBox>
+                  </children>
+               </VBox>
             </children>
          </HBox>
       </children>

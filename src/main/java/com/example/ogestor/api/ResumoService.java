@@ -13,7 +13,6 @@ import java.util.Optional;
 
 public class ResumoService extends BaseAPI {
 
-
     public Optional<ResumoFinanceiro> getResumoFinanceiro () {
         try {
             HttpRequest request = HttpRequest.newBuilder()
@@ -80,7 +79,6 @@ public class ResumoService extends BaseAPI {
         return Optional.empty();
     }
 
-
     public Optional<RetornoTotalFaturamento> getResumoTotalFaturamento(LocalDate dataInicial, LocalDate dataFinal) {
         try {
 
@@ -117,4 +115,18 @@ public class ResumoService extends BaseAPI {
 
         return Optional.empty();
     }
+
+    public Optional<RetornoTotalFaturamento> getResumoTotalFaturamento() {
+        return getResumoTotalFaturamento(LocalDate.now(), LocalDate.now());
+    }
+
+    public Optional<RetornoTotalFaturamento> getResumoTotalFaturamentoDataIncial(LocalDate dataInicial) {
+        return getResumoTotalFaturamento(dataInicial, LocalDate.now());
+    }
+
+    public Optional<RetornoTotalFaturamento> getResumoTotalFaturamentoDataFinal(LocalDate dataFinal) {
+        return getResumoTotalFaturamento(LocalDate.of(1970, 1, 1), dataFinal);
+    }
+
+
 }
