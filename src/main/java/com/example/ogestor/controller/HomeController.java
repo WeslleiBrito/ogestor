@@ -5,13 +5,20 @@ import com.example.ogestor.componentes.Home;
 import com.example.ogestor.model.ResumoFinanceiro;
 import com.example.ogestor.model.RetornoFaturamento;
 import com.example.ogestor.model.RetornoTotalFaturamento;
+import com.example.ogestor.model.RetornoVendaItem;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
+import java.time.LocalDate;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -21,6 +28,20 @@ import java.util.logging.Logger;
 public class HomeController {
 
 
+    @FXML private TableView<RetornoVendaItem> tabelaVendaItens;
+    @FXML private TableColumn<RetornoVendaItem, String> colVendedor;
+    @FXML private TableColumn<RetornoVendaItem, LocalDate> colData;
+    @FXML private TableColumn<RetornoVendaItem, Integer> colVenda;
+    @FXML private TableColumn<RetornoVendaItem, Integer> colCodigoProduto;
+    @FXML private TableColumn<RetornoVendaItem, String> colProduto;
+    @FXML private TableColumn<RetornoVendaItem, BigDecimal> colQuantidade;
+    @FXML private TableColumn<RetornoVendaItem, BigDecimal> colCusto;
+    @FXML private TableColumn<RetornoVendaItem, BigDecimal> colComissao;
+    @FXML private TableColumn<RetornoVendaItem, BigDecimal> colDespesaVariavel;
+    @FXML private TableColumn<RetornoVendaItem, BigDecimal> colDespesaFixa;
+    @FXML private TableColumn<RetornoVendaItem, BigDecimal> colFaturamento;
+    @FXML private TableColumn<RetornoVendaItem, BigDecimal> colLucroRS;
+    @FXML private TableColumn<RetornoVendaItem, BigDecimal> colLucroPercentual;
     @FXML private Label lucroPercentualMensal;
     @FXML private Label lucroRsMensal;
     @FXML private Label despesaVariavelMensal;
@@ -68,12 +89,12 @@ public class HomeController {
         try {
             ResumoService resumoService = new ResumoService();
 
-            var resumo = resumoService.getFaturamento(
+            var resumo = resumoService.getResumoTotalFaturamento(
                     dataInicial.getValue(), dataFinal.getValue()
             );
 
             if(resumo.isPresent()) {
-                updateFaturamento(resumo.get());
+                updateValorDiario(resumo.get());
             }else {
                 throw new Exception("Erro de conexão com a API");
             }
@@ -141,10 +162,28 @@ public class HomeController {
                 + " %");
     }
 
-    private void updateFaturamento(@NotNull RetornoFaturamento retornoFaturamento) {
+    private void updateTabelaVendaItens(@NotNull RetornoVendaItem retorno) {
 
-        lblValorFaturamento.setText(moedaBr.format(retornoFaturamento.getFaturamento()));
-        lblValorCusto.setText(moedaBr.format(retornoFaturamento.getCusto()));
+        tabelaVendaItens.getItems().clear();
+
+        colVendedor.setCellValueFactory(new PropertyValueFactory<>("cod_vendedor"));
+        colData.setCellValueFactory(new PropertyValueFactory<>("data_venda"));
+        colVenda.setCellValueFactory(new PropertyValueFactory<>("venda"));
+        colCodigoProduto.setCellValueFactory(new PropertyValueFactory<>("cod_produto"));
+        colProduto.setCellValueFactory(new PropertyValueFactory<>("descricao"));
+        colQuantidade.setCellValueFactory(new PropertyValueFactory<>("qtd"));
+        colCusto.setCellValueFactory(new PropertyValueFactory<>("custo"));
+        colComissao.setCellValueFactory(new PropertyValueFactory<>("comissao"));
+        colDespesaVariavel.setCellValueFactory(new PropertyValueFactory<>("despesa_variavel"));
+        colDespesaFixa.setCellValueFactory(new PropertyValueFactory<>("despesa_fixa"));
+        colFaturamento.setCellValueFactory(new PropertyValueFactory<>("total"));
+        colLucroRS.setCellValueFactory(new PropertyValueFactory<>("lucro"));
+        colLucroPercentual.setCellValueFactory(new PropertyValueFactory<>("lucro_percentual"));
+
+
+        ObservableList<RetornoVendaItem> retornoVendaItems = FXCollections.observableArrayList(
+
+        );
     }
 
 }

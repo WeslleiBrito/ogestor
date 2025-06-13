@@ -304,17 +304,21 @@
           </HBox>
          <HBox alignment="CENTER">
             <children>
-               <TableView tableMenuButtonVisible="true">
+               <TableView fx:id="tabelaVendaItens" tableMenuButtonVisible="true">
                  <columns>
-                   <TableColumn text="Código" />
-                   <TableColumn editable="false" text="Produto" />
-                     <TableColumn editable="false" text="Quantidade" />
-                     <TableColumn minWidth="0.0" text="Custo" />
-                     <TableColumn text="Comissão" />
-                     <TableColumn text="Despesa Variável" />
-                     <TableColumn text="Despesa Fixa" />
-                     <TableColumn text="Lucro R$" />
-                     <TableColumn text="Lucro %" />
+                   <TableColumn fx:id="colVenda" text="Venda" />
+                   <TableColumn fx:id="colData" text="Data" />
+                   <TableColumn fx:id="colVendedor" text="Data" />
+                   <TableColumn fx:id="colCodigoProduto" text="Código" />
+                   <TableColumn fx:id="colProduto" editable="false" text="Produto" />
+                   <TableColumn fx:id="colQuantidade" editable="false" text="Quantidade" />
+                   <TableColumn fx:id="colCusto" text="Custo" />
+                   <TableColumn fx:id="colComissao" text="Comissão" />
+                   <TableColumn fx:id="colDespesaVariavel" text="Despesa Variável" />
+                   <TableColumn fx:id="colDespesaFixa" text="Despesa Fixa" />
+                   <TableColumn fx:id="colFaturamento" text="Faturamento" />
+                   <TableColumn fx:id="colLucroRS" text="Lucro R$" />
+                   <TableColumn fx:id="colLucroPercentual" text="Lucro %" />
                  </columns>
                   <padding>
                      <Insets bottom="30.0" />
