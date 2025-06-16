@@ -20,12 +20,14 @@ module com.example.ogestor {
     requires org.hibernate.validator;
     requires java.desktop;
     requires annotations;
-    opens com.example.ogestor.model to com.google.gson;
+    opens com.example.ogestor.model to com.google.gson, javafx.base;
     opens com.example.ogestor to javafx.fxml;
     exports com.example.ogestor;
     exports com.example.ogestor.controller;
     opens com.example.ogestor.controller;
     exports com.example.ogestor.componentes;
     opens com.example.ogestor.componentes;
-    opens com.example.ogestor.DTO to org.hibernate.validator;
+    opens com.example.ogestor.DTO to com.google.gson, org.hibernate.validator;
+
+
 }

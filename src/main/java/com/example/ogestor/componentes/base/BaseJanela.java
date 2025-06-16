@@ -15,6 +15,8 @@ import java.util.logging.Logger;
 public abstract class BaseJanela {
 
     protected Stage stage;
+    protected Scene scene;
+
     private static final Logger LOGGER = Logger.getLogger(BaseJanela.class.getName());
 
     public BaseJanela() {
@@ -30,6 +32,7 @@ public abstract class BaseJanela {
             } else {
                 LOGGER.warning("Ícone da janela não encontrado.");
             }
+
         } catch (Exception e) {
             LOGGER.log(Level.WARNING, "Falha ao configurar o ícone da janela.", e);
         }

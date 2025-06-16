@@ -1,5 +1,6 @@
 package com.example.ogestor.api;
 
+import com.example.ogestor.DTO.RetornoVendaItemDTO;
 import com.example.ogestor.model.ResumoFinanceiro;
 import com.example.ogestor.model.RetornoFaturamento;
 import com.example.ogestor.model.RetornoTotalFaturamento;
@@ -14,6 +15,7 @@ import java.net.http.HttpResponse;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class ResumoService extends BaseAPI {
 
@@ -152,9 +154,14 @@ public class ResumoService extends BaseAPI {
             );
 
             if (response.statusCode() == 200) {
-                Type tipoLista = new TypeToken<List<RetornoVendaItem>>() {}.getType();
-                List<RetornoVendaItem> lista = gson.fromJson(response.body(), tipoLista);
-                return Optional.ofNullable(lista);
+                Type tipoLista = new TypeToken<List<RetornoVendaItemDTO>>() {}.getType();
+                List<RetornoVendaItemDTO> dtoList = gson.fromJson(response.body(), tipoLista);
+
+                List<RetornoVendaItem> lista = dtoList.stream()
+                        .map(RetornoVendaItem::fromDTO)
+                        .collect(Collectors.toList());
+
+                return Optional.of(lista);
             } else {
                 System.err.println("Erro: código " + response.statusCode());
             }
@@ -165,6 +172,11 @@ public class ResumoService extends BaseAPI {
         return Optional.empty();
     }
 
+    public Optional<List<RetornoVendaItem>> getVendaItem() {
+
+        return getVendaItem(LocalDate.now(), LocalDate.now());
+
+    }
 
     public Optional<List<RetornoVendaItem>> getVendaItemDataInicial(LocalDate dataInicial) {
 

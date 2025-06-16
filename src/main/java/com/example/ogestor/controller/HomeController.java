@@ -9,16 +9,15 @@ import com.example.ogestor.model.RetornoVendaItem;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -98,6 +97,16 @@ public class HomeController {
             }else {
                 throw new Exception("Erro de conexão com a API");
             }
+
+            var retornoVendaItem = resumoService.getVendaItem(
+                    dataInicial.getValue(), dataFinal.getValue()
+            );
+
+            if(retornoVendaItem.isPresent()) {
+                updateTabelaVendaItens(retornoVendaItem.get());
+            }else {
+                throw new Exception("Erro de conexão com a API");
+            }
         }catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
@@ -111,7 +120,7 @@ public class HomeController {
             if(resumoMensal.isPresent()) {
                 updateValorTotalMensal(resumoMensal.get());
             }else {
-                throw new Exception("Erro de conexão com a API");
+                throw new Exception("Erro ao buscar os dados do resumo mensal.");
             }
 
             var resumoDiario = buscarValorPorData();
@@ -119,7 +128,15 @@ public class HomeController {
             if(resumoDiario.isPresent()) {
                 updateValorDiario(resumoDiario.get());
             }else {
-                throw new Exception("Erro de conexão com a API");
+                throw new Exception("Erro ao buscar os dados do faturamento diaário");
+            }
+
+            var vendaItem = buscarValoresVendaItem();
+
+            if(vendaItem.isPresent()) {
+                updateTabelaVendaItens(vendaItem.get());
+            }else {
+                throw new Exception("Erro ao buscar os dados do faturamento diario");
             }
 
         }catch (Exception e) {
@@ -137,6 +154,11 @@ public class HomeController {
         return resumoService.getResumoTotalFaturamento();
     }
 
+    private Optional<List<RetornoVendaItem>> buscarValoresVendaItem() {
+        ResumoService resumoService = new ResumoService();
+        return resumoService.getVendaItem();
+    }
+
     private void updateValorTotalMensal(@NotNull ResumoFinanceiro resumo) {
 
         faturamentoMensal.setText("Faturamento: " + moedaBr.format(resumo.getFaturamento()));
@@ -150,7 +172,6 @@ public class HomeController {
     }
 
     private void updateValorDiario(@NotNull RetornoTotalFaturamento retorno) {
-        System.out.println(retorno);
         lblValorFaturamento.setText(moedaBr.format(retorno.getFaturamento()));
         lblValorCusto.setText(moedaBr.format(retorno.getCusto()));
         lblValorComissao.setText(moedaBr.format(retorno.getComissao()));
@@ -162,28 +183,136 @@ public class HomeController {
                 + " %");
     }
 
-    private void updateTabelaVendaItens(@NotNull RetornoVendaItem retorno) {
+    private void updateTabelaVendaItens(@NotNull List<RetornoVendaItem> retorno) {
 
         tabelaVendaItens.getItems().clear();
 
-        colVendedor.setCellValueFactory(new PropertyValueFactory<>("cod_vendedor"));
-        colData.setCellValueFactory(new PropertyValueFactory<>("data_venda"));
         colVenda.setCellValueFactory(new PropertyValueFactory<>("venda"));
-        colCodigoProduto.setCellValueFactory(new PropertyValueFactory<>("cod_produto"));
+        colData.setCellValueFactory(new PropertyValueFactory<>("dataVenda"));
+        colVendedor.setCellValueFactory(new PropertyValueFactory<>("nomeVendedor"));
+        colCodigoProduto.setCellValueFactory(new PropertyValueFactory<>("codProduto"));
         colProduto.setCellValueFactory(new PropertyValueFactory<>("descricao"));
         colQuantidade.setCellValueFactory(new PropertyValueFactory<>("qtd"));
         colCusto.setCellValueFactory(new PropertyValueFactory<>("custo"));
         colComissao.setCellValueFactory(new PropertyValueFactory<>("comissao"));
-        colDespesaVariavel.setCellValueFactory(new PropertyValueFactory<>("despesa_variavel"));
-        colDespesaFixa.setCellValueFactory(new PropertyValueFactory<>("despesa_fixa"));
+        colDespesaVariavel.setCellValueFactory(new PropertyValueFactory<>("despesaVariavel"));
+        colDespesaFixa.setCellValueFactory(new PropertyValueFactory<>("despesaFixa"));
         colFaturamento.setCellValueFactory(new PropertyValueFactory<>("total"));
         colLucroRS.setCellValueFactory(new PropertyValueFactory<>("lucro"));
-        colLucroPercentual.setCellValueFactory(new PropertyValueFactory<>("lucro_percentual"));
+        colLucroPercentual.setCellValueFactory(new PropertyValueFactory<>("lucroPercentual"));
 
+        colQuantidade.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(BigDecimal value, boolean empty) {
+                super.updateItem(value, empty);
+                if (empty || value == null) {
+                    setText(null);
+                } else {
+                    setText(numeroBr.format(value));
+                }
+            }
+        });
 
-        ObservableList<RetornoVendaItem> retornoVendaItems = FXCollections.observableArrayList(
+        colData.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                if (empty || date == null) {
+                    setText(null);
+                } else {
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                    setText(date.format(formatter));
+                }
+            }
+        });
 
-        );
+        colCusto.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(BigDecimal value, boolean empty) {
+                super.updateItem(value, empty);
+                if (empty || value == null) {
+                    setText(null);
+                } else {
+                    setText(moedaBr.format(value));
+                }
+            }
+        });
+
+        colComissao.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(BigDecimal value, boolean empty) {
+                super.updateItem(value, empty);
+                if (empty || value == null) {
+                    setText(null);
+                } else {
+                    setText(moedaBr.format(value));
+                }
+            }
+        });
+
+        colDespesaVariavel.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(BigDecimal value, boolean empty) {
+                super.updateItem(value, empty);
+                if (empty || value == null) {
+                    setText(null);
+                } else {
+                    setText(moedaBr.format(value));
+                }
+            }
+        });
+
+        colDespesaFixa.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(BigDecimal value, boolean empty) {
+                super.updateItem(value, empty);
+                if (empty || value == null) {
+                    setText(null);
+                } else {
+                    setText(moedaBr.format(value));
+                }
+            }
+        });
+
+        colFaturamento.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(BigDecimal value, boolean empty) {
+                super.updateItem(value, empty);
+                if (empty || value == null) {
+                    setText(null);
+                } else {
+                    setText(moedaBr.format(value));
+                }
+            }
+        });
+
+        colLucroRS.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(BigDecimal value, boolean empty) {
+                super.updateItem(value, empty);
+                if (empty || value == null) {
+                    setText(null);
+                } else {
+                    setText(moedaBr.format(value));
+                }
+            }
+        });
+
+        colLucroPercentual.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(BigDecimal value, boolean empty) {
+                super.updateItem(value, empty);
+                if (empty || value == null) {
+                    setText(null);
+                } else {
+                    setText(numeroBr.format(value.multiply(new BigDecimal("100"))));
+                }
+            }
+        });
+
+        ObservableList<RetornoVendaItem> retornoVendaItems = FXCollections.observableArrayList(retorno);
+
+        tabelaVendaItens.setItems(retornoVendaItems);
     }
 
 }
