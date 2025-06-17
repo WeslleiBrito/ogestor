@@ -123,6 +123,7 @@ public class ResumoService extends BaseAPI {
     }
 
     public Optional<RetornoTotalFaturamento> getResumoTotalFaturamento() {
+
         return getResumoTotalFaturamento(LocalDate.now(), LocalDate.now());
     }
 

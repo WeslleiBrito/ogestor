@@ -6,8 +6,11 @@ import com.example.ogestor.model.ResumoFinanceiro;
 import com.example.ogestor.model.RetornoFaturamento;
 import com.example.ogestor.model.RetornoTotalFaturamento;
 import com.example.ogestor.model.RetornoVendaItem;
+import com.example.ogestor.util.LimpaNomeVendedor;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -27,6 +30,9 @@ import java.util.logging.Logger;
 public class HomeController {
 
 
+    @FXML private Label labelBuscar;
+    @FXML private Button btnBuscar;
+    @FXML private ProgressIndicator indicadorBuscar;
     @FXML private TableView<RetornoVendaItem> tabelaVendaItens;
     @FXML private TableColumn<RetornoVendaItem, String> colVendedor;
     @FXML private TableColumn<RetornoVendaItem, LocalDate> colData;
@@ -83,34 +89,67 @@ public class HomeController {
     }
 
     @FXML
-    private void buscarValorTotalPorData(){
+    private void buscarValorTotalPorData() {
+        indicadorBuscar.setVisible(true);
+        btnBuscar.setDisable(true);
+        labelBuscar.setText("Buscando...");
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                ResumoService resumoService = new ResumoService();
 
-        try {
-            ResumoService resumoService = new ResumoService();
+                Optional<RetornoTotalFaturamento> resumo;
+                Optional<List<RetornoVendaItem>> retornoVendaItem;
 
-            var resumo = resumoService.getResumoTotalFaturamento(
-                    dataInicial.getValue(), dataFinal.getValue()
-            );
+                if (dataInicial.getValue() == null && dataFinal.getValue() == null) {
+                    resumo = resumoService.getResumoTotalFaturamento();
+                    retornoVendaItem = resumoService.getVendaItem();
+                } else if (dataInicial.getValue() == null) {
+                    resumo = resumoService.getResumoTotalFaturamentoDataFinal(dataFinal.getValue());
+                    retornoVendaItem = resumoService.getVendaItemDataFinal(dataFinal.getValue());
+                } else if (dataFinal.getValue() == null) {
+                    resumo = resumoService.getResumoTotalFaturamentoDataIncial(dataInicial.getValue());
+                    retornoVendaItem = resumoService.getVendaItemDataInicial(dataInicial.getValue());
+                } else {
+                    resumo = resumoService.getResumoTotalFaturamento(dataInicial.getValue(), dataFinal.getValue());
+                    retornoVendaItem = resumoService.getVendaItem(dataInicial.getValue(), dataFinal.getValue());
+                }
 
-            if(resumo.isPresent()) {
-                updateValorDiario(resumo.get());
-            }else {
-                throw new Exception("Erro de conexão com a API");
+                if (resumo.isPresent()) {
+                    Platform.runLater(() -> updateValorDiario(resumo.get()));
+                } else {
+                    throw new Exception("Erro de conexão com a API (resumo)");
+                }
+
+                if (retornoVendaItem.isPresent()) {
+                    Platform.runLater(() -> updateTabelaVendaItens(retornoVendaItem.get()));
+                } else {
+                    throw new Exception("Erro de conexão com a API (itens)");
+                }
+
+                return null;
             }
 
-            var retornoVendaItem = resumoService.getVendaItem(
-                    dataInicial.getValue(), dataFinal.getValue()
-            );
-
-            if(retornoVendaItem.isPresent()) {
-                updateTabelaVendaItens(retornoVendaItem.get());
-            }else {
-                throw new Exception("Erro de conexão com a API");
+            @Override
+            protected void succeeded() {
+                indicadorBuscar.setVisible(false);
+                btnBuscar.setDisable(false);
+                labelBuscar.setText("Buscar");
             }
-        }catch (Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-        }
+
+            @Override
+            protected void failed() {
+                indicadorBuscar.setVisible(false);
+                btnBuscar.setDisable(false);
+                labelBuscar.setText("Buscar");
+                Throwable ex = getException();
+                LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
+            }
+        };
+
+        new Thread(task).start(); // executa em background
     }
+
 
     @FXML
     private void initialize() {
@@ -310,9 +349,22 @@ public class HomeController {
             }
         });
 
+        colVendedor.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(String value, boolean empty) {
+                super.updateItem(value, empty);
+                if (empty || value == null) {
+                    setText(null);
+                } else {
+                    setText(LimpaNomeVendedor.nomeFormatado(value));
+                }
+            }
+        });
         ObservableList<RetornoVendaItem> retornoVendaItems = FXCollections.observableArrayList(retorno);
 
         tabelaVendaItens.setItems(retornoVendaItems);
     }
+
+
 
 }

@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.effect.Blend?>
@@ -289,7 +290,14 @@
                   </HBox>
                   <HBox alignment="BOTTOM_CENTER" spacing="10.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#buscarValorTotalPorData" prefHeight="25.0" prefWidth="120.0" text="Buscar" />
+                        <Button fx:id="btnBuscar" mnemonicParsing="false" onAction="#buscarValorTotalPorData" prefHeight="25.0" prefWidth="120.0">
+                           <graphic>
+                               <HBox alignment="CENTER">
+                                   <Label fx:id="labelBuscar" text="Buscar" />
+                                   <ProgressIndicator fx:id="indicadorBuscar" prefHeight="30.0" prefWidth="22.0" visible="false"/>
+                               </HBox>
+                           </graphic>
+                        </Button>
                         <Button mnemonicParsing="false" onAction="#atualizarValorTotal" prefHeight="25.0" prefWidth="120.0" text="Atualizar" />
                      </children>
                   </HBox>
@@ -310,11 +318,11 @@
              <TableColumn fx:id="colVendedor" text="Vendedor" />
              <TableColumn fx:id="colCodigoProduto" text="Código" />
              <TableColumn fx:id="colProduto" editable="false" text="Produto" />
-             <TableColumn fx:id="colQuantidade" editable="false" text="Quantidade" />
+             <TableColumn fx:id="colQuantidade" editable="false" text="QTD" />
              <TableColumn fx:id="colCusto" text="Custo" />
              <TableColumn fx:id="colComissao" text="Comissão" />
              <TableColumn fx:id="colDespesaVariavel" text="Despesa Vr" />
-             <TableColumn fx:id="colDespesaFixa" text="Despesa Fixa" />
+             <TableColumn fx:id="colDespesaFixa" text="Despesa Fx" />
              <TableColumn fx:id="colFaturamento" text="Faturamento" />
              <TableColumn fx:id="colLucroRS" text="Lucro R$" />
              <TableColumn fx:id="colLucroPercentual" text="Lucro %" />
