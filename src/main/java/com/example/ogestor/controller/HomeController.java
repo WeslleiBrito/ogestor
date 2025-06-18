@@ -1,17 +1,24 @@
 package com.example.ogestor.controller;
 
-import com.example.ogestor.api.ResumoService;
+import com.example.ogestor.api.ResumoFinanceiroService;
+import com.example.ogestor.api.ResumoTotalFaturamentoService;
+import com.example.ogestor.api.VendaItemService;
+import com.example.ogestor.api.VendedorService;
 import com.example.ogestor.componentes.Home;
 import com.example.ogestor.model.ResumoFinanceiro;
-import com.example.ogestor.model.RetornoFaturamento;
 import com.example.ogestor.model.RetornoTotalFaturamento;
 import com.example.ogestor.model.RetornoVendaItem;
+import com.example.ogestor.model.RetornoVendedor;
 import com.example.ogestor.util.LimpaNomeVendedor;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.jetbrains.annotations.NotNull;
@@ -30,6 +37,7 @@ import java.util.logging.Logger;
 public class HomeController {
 
 
+    @FXML private BarChart<String, Number> barChartVendedor;
     @FXML private Label labelBuscar;
     @FXML private Button btnBuscar;
     @FXML private ProgressIndicator indicadorBuscar;
@@ -96,23 +104,30 @@ public class HomeController {
         Task<Void> task = new Task<>() {
             @Override
             protected Void call() throws Exception {
-                ResumoService resumoService = new ResumoService();
+                ResumoTotalFaturamentoService resumoFaturamento = new ResumoTotalFaturamentoService();
+                VendaItemService vendaItem = new VendaItemService();
+                VendedorService vendedorService = new VendedorService();
 
                 Optional<RetornoTotalFaturamento> resumo;
                 Optional<List<RetornoVendaItem>> retornoVendaItem;
+                Optional<List<RetornoVendedor>> retornoVendedor;
 
                 if (dataInicial.getValue() == null && dataFinal.getValue() == null) {
-                    resumo = resumoService.getResumoTotalFaturamento();
-                    retornoVendaItem = resumoService.getVendaItem();
+                    resumo = resumoFaturamento.getResumoTotalFaturamento();
+                    retornoVendaItem = vendaItem.getVendaItem();
+                    retornoVendedor = vendedorService.getVendasVendedor();
                 } else if (dataInicial.getValue() == null) {
-                    resumo = resumoService.getResumoTotalFaturamentoDataFinal(dataFinal.getValue());
-                    retornoVendaItem = resumoService.getVendaItemDataFinal(dataFinal.getValue());
+                    resumo = resumoFaturamento.getResumoTotalFaturamentoDataFinal(dataFinal.getValue());
+                    retornoVendaItem = vendaItem.getVendaItemDataFinal(dataFinal.getValue());
+                    retornoVendedor = vendedorService.getVendasVendedorDataFinal(dataFinal.getValue());
                 } else if (dataFinal.getValue() == null) {
-                    resumo = resumoService.getResumoTotalFaturamentoDataIncial(dataInicial.getValue());
-                    retornoVendaItem = resumoService.getVendaItemDataInicial(dataInicial.getValue());
+                    resumo = resumoFaturamento.getResumoTotalFaturamentoDataIncial(dataInicial.getValue());
+                    retornoVendaItem = vendaItem.getVendaItemDataInicial(dataInicial.getValue());
+                    retornoVendedor = vendedorService.getVendasVendedorDataInicial(dataInicial.getValue());
                 } else {
-                    resumo = resumoService.getResumoTotalFaturamento(dataInicial.getValue(), dataFinal.getValue());
-                    retornoVendaItem = resumoService.getVendaItem(dataInicial.getValue(), dataFinal.getValue());
+                    resumo = resumoFaturamento.getResumoTotalFaturamento(dataInicial.getValue(), dataFinal.getValue());
+                    retornoVendaItem = vendaItem.getVendaItem(dataInicial.getValue(), dataFinal.getValue());
+                    retornoVendedor = vendedorService.getVendasVendedor(dataInicial.getValue(), dataFinal.getValue());
                 }
 
                 if (resumo.isPresent()) {
@@ -125,6 +140,12 @@ public class HomeController {
                     Platform.runLater(() -> updateTabelaVendaItens(retornoVendaItem.get()));
                 } else {
                     throw new Exception("Erro de conexão com a API (itens)");
+                }
+
+                if (retornoVendedor.isPresent()) {
+                    Platform.runLater(() -> updateGraficoVendedor(retornoVendedor.get()));
+                } else {
+                    throw new Exception("Erro de conexão com ao buscar os dados dos vendedores.");
                 }
 
                 return null;
@@ -150,10 +171,10 @@ public class HomeController {
         new Thread(task).start(); // executa em background
     }
 
-
     @FXML
     private void initialize() {
         try {
+
             var resumoMensal = buscarDadosValoresTotalPadrao();
 
             if(resumoMensal.isPresent()) {
@@ -178,30 +199,43 @@ public class HomeController {
                 throw new Exception("Erro ao buscar os dados do faturamento diario");
             }
 
+            var vendaVendedor = buscarVendaVendedor();
+
+            if(vendaVendedor.isPresent()) {
+                updateGraficoVendedor(vendaVendedor.get());
+            }else {
+                throw new Exception("Erro ao buscar os dados do faturamento diario");
+            }
+
         }catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 
     private Optional<ResumoFinanceiro> buscarDadosValoresTotalPadrao() {
-        ResumoService resumoService = new ResumoService();
-        return resumoService.getResumoFinanceiro();
+        ResumoFinanceiroService resumoFinanceiroService = new ResumoFinanceiroService();
+        return resumoFinanceiroService.getResumoFinanceiro();
+    }
+
+    private Optional<List<RetornoVendedor>> buscarVendaVendedor() {
+        VendedorService vendedorService = new VendedorService();
+        return vendedorService.getVendasVendedor();
     }
 
     private Optional<RetornoTotalFaturamento> buscarValorPorData() {
-        ResumoService resumoService = new ResumoService();
-        return resumoService.getResumoTotalFaturamento();
+        ResumoTotalFaturamentoService resumoFaturamento = new ResumoTotalFaturamentoService();
+        return resumoFaturamento.getResumoTotalFaturamento();
     }
 
     private Optional<List<RetornoVendaItem>> buscarValoresVendaItem() {
-        ResumoService resumoService = new ResumoService();
-        return resumoService.getVendaItem();
+        VendaItemService vendaItem = new VendaItemService();
+        return vendaItem.getVendaItem();
     }
 
     private void updateValorTotalMensal(@NotNull ResumoFinanceiro resumo) {
 
         faturamentoMensal.setText("Faturamento: " + moedaBr.format(resumo.getFaturamento()));
-        custoMensal.setText("Custo " + moedaBr.format(resumo.getCusto()));
+        custoMensal.setText("Custo: " + moedaBr.format(resumo.getCusto()));
         despesaVariavelMensal.setText("Despesa variável: " + moedaBr.format(resumo.getDespesaVariavel()));
         despesaFixaMensal.setText("Despesa Fixa: " + moedaBr.format(resumo.getDespesaFixa()));
         lucroRsMensal.setText("Lucro Monetário: " + moedaBr.format(resumo.getLucroRs()));
@@ -356,7 +390,7 @@ public class HomeController {
                 if (empty || value == null) {
                     setText(null);
                 } else {
-                    setText(LimpaNomeVendedor.nomeFormatado(value));
+                    setText(LimpaNomeVendedor.nomeFormatado(value, true));
                 }
             }
         });
@@ -365,6 +399,33 @@ public class HomeController {
         tabelaVendaItens.setItems(retornoVendaItems);
     }
 
+    private void updateGraficoVendedor(@NotNull List<RetornoVendedor> retorno) {
+        barChartVendedor.getData().clear();
 
+        XYChart.Series<String, Number> serieLucro = new XYChart.Series<>();
+        serieLucro.setName("Lucro");
+
+        XYChart.Series<String, Number> serieFaturamento = new XYChart.Series<>();
+        serieFaturamento.setName("Faturamento");
+
+        XYChart.Series<String, Number> serieLucroPercentual = new XYChart.Series<>();
+        serieLucroPercentual.setName("Lucro %");
+
+        for(RetornoVendedor vendedor : retorno) {
+
+            String nome = LimpaNomeVendedor.nomeFormatado(vendedor.getVendedorDescricao(), false);
+
+            barChartVendedor.getData().clear();
+
+            serieFaturamento.getData().add(new XYChart.Data<>(nome, vendedor.getFaturamento()));
+            serieLucro.getData().add(new XYChart.Data<>(nome, vendedor.getLucro()));
+            serieLucroPercentual.getData().add(new XYChart.Data<>(nome, vendedor.getLucroPercentual().multiply(new BigDecimal("100"))));
+
+        }
+
+        barChartVendedor.getData().add(serieFaturamento);
+        barChartVendedor.getData().add(serieLucro);
+        barChartVendedor.getData().add(serieLucroPercentual);
+    }
 
 }
