@@ -16,8 +16,6 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -37,6 +35,7 @@ import java.util.logging.Logger;
 public class HomeController {
 
 
+    @FXML private Label comissaoMensal;
     @FXML private BarChart<String, Number> barChartVendedor;
     @FXML private Label labelBuscar;
     @FXML private Button btnBuscar;
@@ -107,19 +106,23 @@ public class HomeController {
                 ResumoTotalFaturamentoService resumoFaturamento = new ResumoTotalFaturamentoService();
                 VendaItemService vendaItem = new VendaItemService();
                 VendedorService vendedorService = new VendedorService();
+                ResumoFinanceiroService resumoFinanceiroService = new ResumoFinanceiroService();
 
                 Optional<RetornoTotalFaturamento> resumo;
                 Optional<List<RetornoVendaItem>> retornoVendaItem;
                 Optional<List<RetornoVendedor>> retornoVendedor;
-
+                Optional<ResumoFinanceiro> resumoMensal = Optional.empty();
+                
                 if (dataInicial.getValue() == null && dataFinal.getValue() == null) {
                     resumo = resumoFaturamento.getResumoTotalFaturamento();
                     retornoVendaItem = vendaItem.getVendaItem();
                     retornoVendedor = vendedorService.getVendasVendedor();
+                    resumoMensal = resumoFinanceiroService.getResumoFinanceiro();
                 } else if (dataInicial.getValue() == null) {
                     resumo = resumoFaturamento.getResumoTotalFaturamentoDataFinal(dataFinal.getValue());
                     retornoVendaItem = vendaItem.getVendaItemDataFinal(dataFinal.getValue());
                     retornoVendedor = vendedorService.getVendasVendedorDataFinal(dataFinal.getValue());
+                    resumoMensal = resumoFinanceiroService.getResumoFinanceiroDataFinal(dataFinal.getValue());
                 } else if (dataFinal.getValue() == null) {
                     resumo = resumoFaturamento.getResumoTotalFaturamentoDataIncial(dataInicial.getValue());
                     retornoVendaItem = vendaItem.getVendaItemDataInicial(dataInicial.getValue());
@@ -147,7 +150,13 @@ public class HomeController {
                 } else {
                     throw new Exception("Erro de conexão com ao buscar os dados dos vendedores.");
                 }
-
+                
+                
+                if(resumoMensal.isPresent()) {
+                    updateValorTotalMensal(resumoMensal.get());
+                }else {
+                    throw new Exception("Erro ao buscar os dados do resumo mensal.");
+                }
                 return null;
             }
 
@@ -188,7 +197,7 @@ public class HomeController {
             if(resumoDiario.isPresent()) {
                 updateValorDiario(resumoDiario.get());
             }else {
-                throw new Exception("Erro ao buscar os dados do faturamento diaário");
+                throw new Exception("Erro ao buscar os dados do faturamento diário");
             }
 
             var vendaItem = buscarValoresVendaItem();
@@ -237,6 +246,7 @@ public class HomeController {
         faturamentoMensal.setText("Faturamento: " + moedaBr.format(resumo.getFaturamento()));
         custoMensal.setText("Custo: " + moedaBr.format(resumo.getCusto()));
         despesaVariavelMensal.setText("Despesa variável: " + moedaBr.format(resumo.getDespesaVariavel()));
+        comissaoMensal.setText("Comissão: " + moedaBr.format(resumo.getComissao()));
         despesaFixaMensal.setText("Despesa Fixa: " + moedaBr.format(resumo.getDespesaFixa()));
         lucroRsMensal.setText("Lucro Monetário: " + moedaBr.format(resumo.getLucroRs()));
         lucroPercentualMensal.setText("Lucro %: " +

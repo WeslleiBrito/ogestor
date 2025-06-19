@@ -356,6 +356,7 @@
                            <Label fx:id="custoMensal" text="Custo" />
                            <Label fx:id="despesaFixaMensal" text="Despesa Fixa" />
                            <Label fx:id="despesaVariavelMensal" text="Despesa Variável" />
+                           <Label fx:id="comissaoMensal" text="Despesa Variável" />
                            <Label fx:id="lucroRsMensal" text="Lucro R$" />
                            <Label fx:id="lucroPercentualMensal" text="Lucro R$" />
                         </children>

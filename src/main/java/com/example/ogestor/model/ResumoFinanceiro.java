@@ -12,6 +12,7 @@ public class ResumoFinanceiro {
     private final BigDecimal lucro_rs;
     private final BigDecimal lucro_percentual;
     private final List<String> periodo;
+    private final BigDecimal comissao;
     
     
     public ResumoFinanceiro (
@@ -20,6 +21,7 @@ public class ResumoFinanceiro {
             BigDecimal desconto,
             BigDecimal despesaFixa,
             BigDecimal despesaVariavel,
+            BigDecimal comissao,
             BigDecimal lucroRS,
             BigDecimal lucroPorcentagem,
             List<String> periodo
@@ -29,6 +31,7 @@ public class ResumoFinanceiro {
         this.desconto = desconto;
         this.despesa_fixa = despesaFixa;
         this.despesa_variavel = despesaVariavel;
+        this.comissao = comissao;
         this.lucro_rs = lucroRS;
         this.lucro_percentual = lucroPorcentagem;
         this.periodo = periodo;
@@ -67,6 +70,10 @@ public class ResumoFinanceiro {
         return periodo;
     }
 
+    public BigDecimal getComissao() {
+        return comissao;
+    }
+
     @Override
     public String toString() {
         return "ResumoFinanceiro{" +
@@ -75,6 +82,7 @@ public class ResumoFinanceiro {
                 ", desconto=" + desconto +
                 ", despesa_fixa=" + despesa_fixa +
                 ", despesa_variavel=" + despesa_variavel +
+                ", despesa_variavel=" + comissao +
                 ", lucro_rs=" + lucro_rs +
                 ", lucro_percentual=" + lucro_percentual +
                 ", periodo=" + periodo +
