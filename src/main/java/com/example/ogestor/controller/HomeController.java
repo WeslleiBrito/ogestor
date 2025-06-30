@@ -111,26 +111,28 @@ public class HomeController {
                 Optional<RetornoTotalFaturamento> resumo;
                 Optional<List<RetornoVendaItem>> retornoVendaItem;
                 Optional<List<RetornoVendedor>> retornoVendedor;
-                Optional<ResumoFinanceiro> resumoMensal = Optional.empty();
+                Optional<ResumoFinanceiro> resumoMensal;
                 
                 if (dataInicial.getValue() == null && dataFinal.getValue() == null) {
                     resumo = resumoFaturamento.getResumoTotalFaturamento();
                     retornoVendaItem = vendaItem.getVendaItem();
                     retornoVendedor = vendedorService.getVendasVendedor();
                     resumoMensal = resumoFinanceiroService.getResumoFinanceiro();
-                } else if (dataInicial.getValue() == null) {
+                } else if (dataInicial.getValue() == null && dataFinal.getValue() != null) {
                     resumo = resumoFaturamento.getResumoTotalFaturamentoDataFinal(dataFinal.getValue());
                     retornoVendaItem = vendaItem.getVendaItemDataFinal(dataFinal.getValue());
                     retornoVendedor = vendedorService.getVendasVendedorDataFinal(dataFinal.getValue());
                     resumoMensal = resumoFinanceiroService.getResumoFinanceiroDataFinal(dataFinal.getValue());
-                } else if (dataFinal.getValue() == null) {
+                } else if (dataFinal.getValue() == null && dataInicial.getValue() != null) {
                     resumo = resumoFaturamento.getResumoTotalFaturamentoDataIncial(dataInicial.getValue());
                     retornoVendaItem = vendaItem.getVendaItemDataInicial(dataInicial.getValue());
                     retornoVendedor = vendedorService.getVendasVendedorDataInicial(dataInicial.getValue());
+                    resumoMensal = resumoFinanceiroService.getResumoFinanceiroDataFinal(dataInicial.getValue());
                 } else {
                     resumo = resumoFaturamento.getResumoTotalFaturamento(dataInicial.getValue(), dataFinal.getValue());
                     retornoVendaItem = vendaItem.getVendaItem(dataInicial.getValue(), dataFinal.getValue());
                     retornoVendedor = vendedorService.getVendasVendedor(dataInicial.getValue(), dataFinal.getValue());
+                    resumoMensal = resumoFinanceiroService.getResumoFinanceiro(dataInicial.getValue(), dataFinal.getValue());
                 }
 
                 if (resumo.isPresent()) {
@@ -153,8 +155,9 @@ public class HomeController {
                 
                 
                 if(resumoMensal.isPresent()) {
-                    updateValorTotalMensal(resumoMensal.get());
+                    Platform.runLater(() -> updateValorTotalMensal(resumoMensal.get()));
                 }else {
+                    System.out.println(resumoMensal);
                     throw new Exception("Erro ao buscar os dados do resumo mensal.");
                 }
                 return null;
@@ -184,14 +187,6 @@ public class HomeController {
     private void initialize() {
         try {
 
-            var resumoMensal = buscarDadosValoresTotalPadrao();
-
-            if(resumoMensal.isPresent()) {
-                updateValorTotalMensal(resumoMensal.get());
-            }else {
-                throw new Exception("Erro ao buscar os dados do resumo mensal.");
-            }
-
             var resumoDiario = buscarValorPorData();
 
             if(resumoDiario.isPresent()) {
@@ -212,6 +207,14 @@ public class HomeController {
 
             if(vendaVendedor.isPresent()) {
                 updateGraficoVendedor(vendaVendedor.get());
+            }else {
+                throw new Exception("Erro ao buscar os dados do faturamento diario");
+            }
+
+            var resumoMensal = buscarValoresResumoMensal();
+
+            if(resumoMensal.isPresent()) {
+                updateValorTotalMensal(resumoMensal.get());
             }else {
                 throw new Exception("Erro ao buscar os dados do faturamento diario");
             }
@@ -241,8 +244,12 @@ public class HomeController {
         return vendaItem.getVendaItem();
     }
 
-    private void updateValorTotalMensal(@NotNull ResumoFinanceiro resumo) {
+    private Optional<ResumoFinanceiro> buscarValoresResumoMensal() {
+        ResumoFinanceiroService resumoMensal = new ResumoFinanceiroService();
+        return resumoMensal.getResumoFinanceiro();
+    }
 
+    private void updateValorTotalMensal(@NotNull ResumoFinanceiro resumo) {
         faturamentoMensal.setText("Faturamento: " + moedaBr.format(resumo.getFaturamento()));
         custoMensal.setText("Custo: " + moedaBr.format(resumo.getCusto()));
         despesaVariavelMensal.setText("Despesa variável: " + moedaBr.format(resumo.getDespesaVariavel()));

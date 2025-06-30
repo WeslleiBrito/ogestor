@@ -6,6 +6,7 @@ import java.net.URI;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.Optional;
 
 
@@ -50,8 +51,13 @@ public class ResumoFinanceiroService extends BaseAPI {
     }
 
     public Optional<ResumoFinanceiro> getResumoFinanceiro() {
-        return getResumoFinanceiro(LocalDate.now(), LocalDate.now());
+        LocalDate dataAtual = LocalDate.now();
+        LocalDate dataInicial = LocalDate.of(dataAtual.getYear(), dataAtual.getMonthValue(), 1);
+        LocalDate dataFinal = YearMonth.from(dataInicial).atEndOfMonth();
+
+        return getResumoFinanceiro(dataInicial, dataFinal);
     }
+
     public Optional<ResumoFinanceiro> getResumoFinanceiroDataInicial(LocalDate dataInicial) {
         return getResumoFinanceiro(dataInicial, LocalDate.now());
     }
