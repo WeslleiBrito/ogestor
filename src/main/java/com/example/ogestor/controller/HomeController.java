@@ -1,14 +1,13 @@
 package com.example.ogestor.controller;
 
-import com.example.ogestor.api.ResumoFinanceiroService;
-import com.example.ogestor.api.ResumoTotalFaturamentoService;
-import com.example.ogestor.api.VendaItemService;
-import com.example.ogestor.api.VendedorService;
+import com.example.ogestor.api.*;
 import com.example.ogestor.componentes.Home;
 import com.example.ogestor.model.ResumoFinanceiro;
 import com.example.ogestor.model.RetornoTotalFaturamento;
 import com.example.ogestor.model.RetornoVendaItem;
 import com.example.ogestor.model.RetornoVendedor;
+import com.example.ogestor.reports.vendas.ReportVenda;
+import com.example.ogestor.util.ImageUtil;
 import com.example.ogestor.util.LimpaNomeVendedor;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -188,6 +187,9 @@ public class HomeController {
         try {
 
             var resumoDiario = buscarValorPorData();
+            ReportVenda reportVenda = new ReportVenda();
+
+            //reportVenda.reportTable();
 
             if(resumoDiario.isPresent()) {
                 updateValorDiario(resumoDiario.get());

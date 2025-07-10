@@ -20,6 +20,8 @@ module com.example.ogestor {
     requires org.hibernate.validator;
     requires java.desktop;
     requires annotations;
+    requires jasperreports;
+    requires org.slf4j;
     opens com.example.ogestor.model to com.google.gson, javafx.base;
     opens com.example.ogestor to javafx.fxml;
     exports com.example.ogestor;
