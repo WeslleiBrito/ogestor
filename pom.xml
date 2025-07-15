@@ -166,6 +166,11 @@
             <artifactId>jasperreports</artifactId>
             <version>6.20.6</version> <!-- Esta é a versão -->
         </dependency>
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy</artifactId>
+            <version>3.0.21</version> <!-- Ou uma versão compatível com o JasperReports -->
+        </dependency>
 
     </dependencies>
 

@@ -7,7 +7,6 @@ import com.example.ogestor.model.RetornoTotalFaturamento;
 import com.example.ogestor.model.RetornoVendaItem;
 import com.example.ogestor.model.RetornoVendedor;
 import com.example.ogestor.reports.vendas.ReportVenda;
-import com.example.ogestor.util.ImageUtil;
 import com.example.ogestor.util.LimpaNomeVendedor;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -189,7 +188,7 @@ public class HomeController {
             var resumoDiario = buscarValorPorData();
             ReportVenda reportVenda = new ReportVenda();
 
-            //reportVenda.reportTable();
+            reportVenda.reportTable("Venda");
 
             if(resumoDiario.isPresent()) {
                 updateValorDiario(resumoDiario.get());

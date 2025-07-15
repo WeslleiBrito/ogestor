@@ -16,11 +16,11 @@ import java.util.Objects;
 
 public class ReportVenda {
 
-    public void reportTable() {
+    public void reportTable(String nameReport) {
 
         try{
             String modelPath = Objects.requireNonNull(getClass().getResource(
-                    "src/main/java/com/example/ogestor/reports/vendas/modelReportVenda.jrxml")
+                    "/com/example/ogestor/reports/vendas/modelReportVenda.jasper")
             ).getPath();
 
             DadosEmpresaService dadosEmpresa = new DadosEmpresaService();
@@ -43,6 +43,7 @@ public class ReportVenda {
                 parameters.put("CIDADE", dados.endereco.cidade);
                 parameters.put("UF", dados.endereco.siglaEstado);
                 parameters.put("CEP", dados.endereco.cep);
+                parameters.put("TITULO_RELATORIO", nameReport);
 
                 JRDataSource dataSourceVazio = new JREmptyDataSource();
                 JasperPrint print = JasperFillManager.fillReport(modelPath, parameters, dataSourceVazio);

@@ -6,7 +6,7 @@
 	<parameter name="CNPJ" class="java.lang.String"/>
 	<parameter name="TELEFONE" class="java.lang.String"/>
 	<parameter name="EMAIL" class="java.lang.String"/>
-	<parameter name="LOGO" class="java.awt.Image"/>
+	<parameter name="LOGO" class="java.awt.image.BufferedImage"/>
 	<parameter name="INSCRICAO_ESTADUAL" class="java.lang.String"/>
 	<parameter name="NUMERO" class="java.lang.String"/>
 	<parameter name="RUA" class="java.lang.String"/>
@@ -21,22 +21,22 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="55" splitType="Stretch">
+		<band height="79" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="100" height="30" uuid="1b15b62a-c65a-47b8-b1c8-60127e321816"/>
-				<textFieldExpression><![CDATA[$P{LOGO}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="120" y="0" width="100" height="30" uuid="122fa8da-7d93-42a6-bec0-ec56e70b593e"/>
+				<reportElement x="120" y="0" width="270" height="30" uuid="122fa8da-7d93-42a6-bec0-ec56e70b593e"/>
 				<textFieldExpression><![CDATA[$P{NOME_EMPRESA}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="420" y="0" width="50" height="20" uuid="beddec8a-0470-4868-be27-3dceff4fb592"/>
+				<reportElement x="400" y="0" width="30" height="20" uuid="beddec8a-0470-4868-be27-3dceff4fb592"/>
 				<text><![CDATA[CNPJ:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="480" y="0" width="61" height="21" uuid="2a6a9609-87e9-481b-be66-9f4d70ddb40a"/>
+				<reportElement x="430" y="0" width="95" height="21" uuid="2a6a9609-87e9-481b-be66-9f4d70ddb40a"/>
 				<textFieldExpression><![CDATA[$P{CNPJ}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="100" height="30" uuid="6460f578-fe6b-42ed-b0cd-9ec74e6777c9"/>
+				<textFieldExpression><![CDATA[$P{LOGO}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>

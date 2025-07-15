@@ -30,6 +30,7 @@ module com.example.ogestor {
     exports com.example.ogestor.componentes;
     opens com.example.ogestor.componentes;
     opens com.example.ogestor.DTO to com.google.gson, org.hibernate.validator;
-
+    exports com.example.ogestor.reports.vendas;
+    opens com.example.ogestor.reports.vendas;
 
 }
