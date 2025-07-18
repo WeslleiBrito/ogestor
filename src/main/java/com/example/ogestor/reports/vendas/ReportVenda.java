@@ -1,22 +1,24 @@
 package com.example.ogestor.reports.vendas;
 
 import com.example.ogestor.DTO.EmpresaDTO;
+import com.example.ogestor.DTO.RetornoVendaItemDTO;
 import com.example.ogestor.api.DadosEmpresaService;
 import com.example.ogestor.exception.ErrorDefault;
 import com.example.ogestor.exception.ErrorLogger;
 import com.example.ogestor.util.ImageUtil;
-import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.view.JasperViewer;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 public class ReportVenda {
 
-    public void reportTable(String nameReport) {
+    public void reportTable(String nameReport, List<RetornoVendaItemDTO> listItens) {
 
         try{
             String modelPath = Objects.requireNonNull(getClass().getResource(
@@ -45,8 +47,14 @@ public class ReportVenda {
                 parameters.put("CEP", dados.endereco.cep);
                 parameters.put("TITULO_RELATORIO", nameReport);
 
-                JRDataSource dataSourceVazio = new JREmptyDataSource();
-                JasperPrint print = JasperFillManager.fillReport(modelPath, parameters, dataSourceVazio);
+                parameters.put("itensTable", new JRBeanCollectionDataSource(listItens));
+
+                JasperPrint print = JasperFillManager.fillReport(
+                        modelPath,
+                        parameters,
+                        new JREmptyDataSource() // Ou null, já que os dados estão no subDataset
+                );
+
 
                 JasperViewer.viewReport(print, false);
             }else {

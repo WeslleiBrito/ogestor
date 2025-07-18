@@ -1,5 +1,6 @@
 package com.example.ogestor.controller;
 
+import com.example.ogestor.DTO.RetornoVendaItemDTO;
 import com.example.ogestor.api.*;
 import com.example.ogestor.componentes.Home;
 import com.example.ogestor.model.ResumoFinanceiro;
@@ -8,6 +9,7 @@ import com.example.ogestor.model.RetornoVendaItem;
 import com.example.ogestor.model.RetornoVendedor;
 import com.example.ogestor.reports.vendas.ReportVenda;
 import com.example.ogestor.util.LimpaNomeVendedor;
+import com.example.ogestor.util.VendaItemMapper;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -33,6 +35,7 @@ import java.util.logging.Logger;
 public class HomeController {
 
 
+    @FXML private Button btnPrint;
     @FXML private Label comissaoMensal;
     @FXML private BarChart<String, Number> barChartVendedor;
     @FXML private Label labelBuscar;
@@ -182,13 +185,23 @@ public class HomeController {
     }
 
     @FXML
+    private void printSales() {
+        try{
+            ReportVenda reportVenda = new ReportVenda();
+            List<RetornoVendaItem> items = tabelaVendaItens.getItems();
+            List<RetornoVendaItemDTO> dtos = VendaItemMapper.toDTOList(items);
+            reportVenda.reportTable("Venda", dtos);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+
+        }
+    }
+
+    @FXML
     private void initialize() {
         try {
 
             var resumoDiario = buscarValorPorData();
-            ReportVenda reportVenda = new ReportVenda();
-
-            reportVenda.reportTable("Venda");
 
             if(resumoDiario.isPresent()) {
                 updateValorDiario(resumoDiario.get());

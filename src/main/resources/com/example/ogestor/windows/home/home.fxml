@@ -333,6 +333,7 @@
                </TableView>
             </children>
          </HBox>
+         <Button fx:id="btnPrint" mnemonicParsing="false" text="Imprimir" onAction="#printSales"/>
          <Pane>
             <children>
                <HBox spacing="50.0">
